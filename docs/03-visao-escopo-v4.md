@@ -27,7 +27,7 @@ Três ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quarto
 - **Dra. Lorena (clínica geral, consultório com Amplimed).** Atende 20 pacientes/dia, digita durante a consulta, quer olhar para o paciente. Precisa que o SOAP chegue pronto no campo de evolução.
 - **Dr. Rui (cliente, PO).** Quer validar se a IA ajuda de fato antes de investir mais; precisa de métricas e de LGPD defensável.
 - **Médico de UBS (e‑SUS PEC).** Sem verba para software pago; usa o PEC do Ministério da Saúde; precisa que a extensão funcione sem instalar servidor (Docker no próprio computador).
-- **equipe 2026.2 (alunos).** 6–8 pessoas, 4 meses, notas dependem de entregas visíveis; precisam de tarefas pequenas e claras.
+- **Equipe 2026.2 (alunos).** 6–8 pessoas, 4 meses, notas dependem de entregas visíveis; precisam de tarefas pequenas e claras.
 
 ## Escopo — dentro
 

@@ -1,5 +1,5 @@
 id,sprint,epico,tipo,titulo,descricao,criterio_de_aceite,pontos,refs
-B01,S0,Base,chore,Criar organização e repositório único,Criar organização GitHub e repositório copilot-medico importando o histórico da branch develop da Equipe 6,Repositório com histórico completo e PO + professor como owners,2,ADR-09;D-21
+B01,S0,Base,chore,Organização e visibilidade do repositório,Repositório ruypontes/copilot-medico já criado (privado; histórico da Equipe 6 sem segredos). Transferir para organização com o professor como co-owner; tornar público para habilitar branch protection; convidar a equipe,Equipe com acesso; professor co-owner; repositório público com develop protegida,2,ADR-09;D-21
 B02,S0,Base,chore,Configurar quadro e template de PR,GitHub Projects por sprint; template de PR com checklist LGPD; branch protection inicial em develop,PR sem template é recusado; quadro com colunas Backlog/Sprint/Em andamento/Revisão/Pronto,2,ADR-08
 B03,S0,Base,docs,Onboarding técnico de cada membro,Cada membro sobe backend e extensão localmente e registra no README o que faltou,README com seção Problemas encontrados no onboarding preenchida por todos,3,US013
 B04,S0,Base,docs,Leitura guiada dos docs 01-05,Sessão de 2 h; cada membro apresenta 5 min sobre uma parte do legado,Ata com dúvidas e decisões,2,
