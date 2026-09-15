@@ -1,0 +1,41 @@
+# Segredos — nunca commitar
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+api-key.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+*.egg-info/
+
+# Node / extensão
+node_modules/
+front/copmed-extension/dist/
+front/copmed-extension/*.tsbuildinfo
+extension-dist.zip
+
+# Banco local e áudio temporário
+API/backend/patients_db.json
+*.db
+*.sqlite
+*.wav
+!API/tests/fixtures/**/*.wav
+
+# Ferramentas locais
+.remember/
+.claude/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Entregáveis gerados (docx/pdf) — fonte é o markdown em docs/
+entregaveis/
