@@ -1,4 +1,4 @@
-# 04 — Documento de Requisitos — CoPilot Médico v4.0
+# 04 — Documento de Requisitos — CoPilot Médico v5.0
 
 **Histórico de versões**
 
@@ -13,7 +13,7 @@ A numeração continua a do documento de 2025 para preservar rastreabilidade. O 
 
 ## 1. Status das estórias herdadas
 
-| ID | Estória | Status na v3.0 | Ação na v4.0 |
+| ID | Estória | Status na v3.0 | Ação na v5.0 |
 |---|---|---|---|
 | US001 | Chat no navegador | Atendida | Manter; cobrir com testes |
 | US002 | Perguntas livres ao Gemini | Atendida | Manter |
@@ -125,7 +125,7 @@ A numeração continua a do documento de 2025 para preservar rastreabilidade. O 
 #### US024 — Como próxima equipe, desejo documentação e vídeos atualizados, para começar sem redescobrir o projeto.
 - CA001 — `docs/` atualizado a cada sprint (requisitos, arquitetura, ADRs, changelog).
 - CA002 — Vídeo pitch (≤ 3 min) e relatório técnico (≤ 6 min) no padrão do REACT Labs.
-- CA003 — Tag `v4.0.0`, release notes, `dist.zip` da extensão anexado.
+- CA003 — Tag `v5.0.0`, release notes, `dist.zip` da extensão anexado.
 
 ---
 

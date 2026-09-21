@@ -6,7 +6,7 @@ Oito sprints de duas semanas, com recesso de 21/12 a 03/01. Cada sprint termina 
 
 ```mermaid
 gantt
-    title CoPilot Médico 4.0 — sprints e marcos
+    title CoPilot Médico 5.0 — sprints e marcos
     dateFormat  YYYY-MM-DD
     axisFormat  %d/%m
     section Sprints
@@ -23,7 +23,7 @@ gantt
     M1 Base estável                 :milestone, m1, 2026-10-09, 0d
     M2 Consulta confiável           :milestone, m2, 2026-11-06, 0d
     M3 Da conversa ao prontuário    :milestone, m3, 2026-12-04, 0d
-    M4 Release v4.0                 :milestone, m4, 2027-01-15, 0d
+    M4 Release v5.0                 :milestone, m4, 2027-01-15, 0d
 ```
 
 | Mês | Período | Foco | Marco |
@@ -85,7 +85,7 @@ gantt
 
 ## Sprint 4 — SOAP estruturado (09/11 – 20/11)
 
-**Objetivo:** o coração da v4.0.
+**Objetivo:** o coração da v5.0.
 
 - US018: `SoapV1` (pydantic) + prompt PT‑BR versionado + `response_schema`; tabela CID‑10 embarcada com busca; `SoapEditor` na extensão (4 seções, CID‑10, alertas, pendências); versões IA × médico com diff; botão "Aprovar".
 - Migrar `gemini_connection.py` para `services/llm/gemini.py` com `google-genai` (D‑06); prompts em PT‑BR sem referências (D‑07).
@@ -125,7 +125,7 @@ Sem entregas. Quem quiser adianta docs.
 **Objetivo:** entregar limpo.
 
 - Bugs do piloto; cobertura ≥ 60 %; revisão de segurança (checklist doc 08).
-- US024: docs atualizados (requisitos, arquitetura, ADRs, changelog); vídeo pitch e relatório técnico; release `v4.0.0` com `dist.zip`; README de handoff para a próxima equipe.
+- US024: docs atualizados (requisitos, arquitetura, ADRs, changelog); vídeo pitch e relatório técnico; release `v5.0.0` com `dist.zip`; README de handoff para a próxima equipe.
 - Retrospectiva final e lista "próximo ciclo" (doc 10).
 
 **Demo M4:** apresentação final ao PO e à disciplina.
@@ -143,7 +143,7 @@ Sem entregas. Quem quiser adianta docs.
 ## Capacidade e estimativa
 
 - Equipe de 6–8 alunos com ~8 h/semana cada → 100–130 h por sprint.
-- Estimativa em pontos (1, 2, 3, 5, 8); 1 ponto ≈ 2 h. Backlog inicial: 66 itens, 256 pontos, distribuídos em `backlog/backlog-v4.csv` (S0 16 · S1 40 · S2 37 · S3 38 · S4 41 · S5 37 · S6 24 · S7 23).
+- Estimativa em pontos (1, 2, 3, 5, 8); 1 ponto ≈ 2 h. Backlog inicial: 66 itens, 256 pontos, distribuídos em `backlog/backlog-v5.csv` (S0 16 · S1 40 · S2 37 · S3 38 · S4 41 · S5 37 · S6 24 · S7 23).
 - Reserva de 20 % por sprint para bugs e imprevistos; a Sprint 7 é 100 % reserva + entrega.
 
 ## Regras de mudança de escopo

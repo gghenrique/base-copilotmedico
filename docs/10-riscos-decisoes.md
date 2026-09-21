@@ -28,7 +28,7 @@ Cada item tem uma **recomendação**, que vale automaticamente se não houver re
 | P1 | Provedor de transcrição pago | (a) Gemini áudio — mesma chave, marcação de falantes; (b) Whisper large‑v3 via Groq — melhor WER em PT‑BR, chave nova; (c) Whisper local — precisa GPU | **DECIDIDO 15/09/2026: (a) Gemini áudio.** Whisper/Groq entra só como comparação no eval, se sobrar tempo | — |
 | P2 | Quem paga as chaves de API durante o semestre | PO / disciplina / créditos gratuitos | PO fornece chave com limite mensal; equipe reporta custo no eval | 25/09 |
 | P3 | Segundo PEP além do Amplimed | e‑SUS PEC (público, Docker oficial) / iClinic / nenhum | **DECIDIDO 15/09/2026: e‑SUS PEC.** | — |
-| P4 | Futuro da trilha privada (Supabase/Vercel) | reativar em paralelo / congelar / migrar ideias para a v4.0 | **Congelar** durante o semestre; reavaliar em M4 com o eval em mãos | 09/10 |
+| P4 | Futuro da trilha privada (Supabase/Vercel) | reativar em paralelo / congelar / migrar ideias para a v5.0 | **Congelar** durante o semestre; reavaliar em M4 com o eval em mãos | 09/10 |
 | P5 | Médicos do piloto | Dr. Rui + Dra. Lorena + convidados | Confirmar dois nomes e datas até a Sprint 4 | 20/11 |
 | P6 | Nome e owner do repositório único | organização `copilot-medico` / conta pessoal do PO | **DECIDIDO 15/09/2026:** repositório `ruypontes/copilot-medico` criado na conta do PO (privado). Transferir para uma organização com o professor como co‑owner e tornar público na Sprint 0 (branch protection só funciona em repositório público no plano gratuito) | — |
 | P7 | Cadastro de identificação do paciente | obrigatório / opcional / nunca | **Opcional** e cifrado (ADR‑03); padrão é só pseudônimo | 23/10 |

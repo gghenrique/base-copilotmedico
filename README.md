@@ -1,7 +1,7 @@
-# CoPilot Médico 4.0 — Projeto de 4 meses (2026.2)
+# CoPilot Médico 5.0 — Projeto de 4 meses (2026.2)
 
 **Cliente / Product Owner:** Dr. Rui Pontes
-**Contexto:** 4º ciclo do projeto CoPilot Médico na disciplina de Engenharia de Software (REACT Labs, UPE – POLI)
+**Contexto:** 5º ciclo do projeto CoPilot Médico na disciplina de Engenharia de Software (REACT Labs, UPE – POLI)
 **Janela:** 15/09/2026 → 15/01/2027 (8 sprints de 2 semanas + recesso)
 **Tema do ciclo:** *Da conversa ao prontuário* — transformar a consulta gravada em um registro clínico estruturado (SOAP + CID-10) que volta para o prontuário eletrônico, com LGPD de verdade.
 
@@ -9,7 +9,7 @@
 
 ## Resumo executivo
 
-Três equipes já passaram pelo CoPilot Médico:
+Quatro equipes já passaram pelo CoPilot Médico:
 
 | Ciclo | Equipe | Período | Versão | O que entregou |
 |---|---|---|---|---|
@@ -22,18 +22,18 @@ O produto **funciona como demo**, mas não como ferramenta de uso diário: banco
 ## O que este projeto entrega
 
 - **Documentação completa** (pasta `docs/`) — histórico, diagnóstico, escopo, requisitos, arquitetura, roadmap, processo, LGPD, qualidade, riscos.
-- **Backlog importável** (`backlog/backlog-v4.csv`) — 66 itens (~256 pontos) com épico, sprint, estimativa e critério de aceite.
+- **Backlog importável** (`backlog/backlog-v5.csv`) — 66 itens (~256 pontos) com épico, sprint, estimativa e critério de aceite.
 - **Anexos** — transcrições revisadas dos 6 vídeos e inventário técnico dos repositórios.
 
 ## Índice
 
 | # | Documento | Para quem |
 |---|---|---|
-| 01 | [Histórico dos três semestres](docs/01-historico-tres-semestres.md) | Toda a equipe (leitura obrigatória na Sprint 0) |
+| 01 | [Histórico dos quatro ciclos](docs/01-historico-quatro-ciclos.md) | Toda a equipe (leitura obrigatória na Sprint 0) |
 | 02 | [Diagnóstico do estado atual](docs/02-diagnostico-estado-atual.md) | Tech leads |
-| 03 | [Visão e escopo da v4.0](docs/03-visao-escopo-v4.md) | PO, equipe, professor |
-| 04 | [Requisitos (US011–US024)](docs/04-requisitos-v4.md) | Equipe, QA |
-| 05 | [Arquitetura alvo e ADRs](docs/05-arquitetura-v4.md) | Devs |
+| 03 | [Visão e escopo da v5.0](docs/03-visao-escopo-v5.md) | PO, equipe, professor |
+| 04 | [Requisitos (US011–US024)](docs/04-requisitos-v5.md) | Equipe, QA |
+| 05 | [Arquitetura alvo e ADRs](docs/05-arquitetura-v5.md) | Devs |
 | 06 | [Roadmap de 4 meses](docs/06-roadmap-4-meses.md) | Todos |
 | 07 | [Equipe e processo](docs/07-equipe-processo.md) | Scrum master, equipe |
 | 08 | [LGPD e segurança](docs/08-lgpd-seguranca.md) | PO, dev responsável por privacidade |

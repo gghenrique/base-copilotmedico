@@ -1,14 +1,14 @@
-# 03 — Visão e escopo da v4.0
+# 03 — Visão e escopo da v5.0
 
 ## Visão
 
 > Ao fim de uma consulta, o médico clica em **"Gerar SOAP"**, revisa um registro clínico estruturado (Subjetivo, Objetivo, Avaliação com CID‑10 sugerido, Plano) montado a partir da conversa gravada, do prontuário e dos exames enviados, e o insere no prontuário eletrônico com um clique — sem que nenhum dado identificável do paciente tenha saído do computador dele.
 
-Três ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quarto ciclo constrói a *saída* que devolve tempo ao médico: o registro pronto para o prontuário.
+Quatro ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quinto ciclo constrói a *saída* que devolve tempo ao médico: o registro pronto para o prontuário.
 
 ## Nome do ciclo
 
-**CoPilot Médico 4.0 — "Da conversa ao prontuário"**
+**CoPilot Médico 5.0 — "Da conversa ao prontuário"**
 
 ## Objetivos (mensuráveis)
 
@@ -20,7 +20,7 @@ Três ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quarto
 | O4 | SOAP estruturado | JSON válido em 100 % das gerações; completude (4 seções preenchidas) ≥ 90 % nos 20 casos; zero referências bibliográficas inventadas (prompt não pede mais) |
 | O5 | Volta para o prontuário | SOAP inserido no campo de evolução do Amplimed e lido/inserido no e‑SUS PEC (leitura + escrita em pelo menos um campo) |
 | O6 | Piloto com médicos | ≥ 2 médicos, ≥ 10 consultas simuladas cada, questionário SUS (System Usability Scale) ≥ 70 |
-| O7 | Handoff limpo | Repositório único com `docs/` atualizado, vídeo pitch + relatório técnico, release `v4.0.0` |
+| O7 | Handoff limpo | Repositório único com `docs/` atualizado, vídeo pitch + relatório técnico, release `v5.0.0` |
 
 ## Personas
 
@@ -46,7 +46,7 @@ Três ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quarto
 ## Escopo — fora (decisão consciente)
 
 - Receitas, atestados, laudos e encaminhamentos gerados por IA (responsabilidade legal, assinatura digital ICP‑Brasil; fica para um ciclo dedicado).
-- Publicação na Chrome Web Store (requer política de privacidade pública e revisão; a v4.0 é distribuída como `dist` zipado).
+- Publicação na Chrome Web Store (requer política de privacidade pública e revisão; a v5.0 é distribuída como `dist` zipado).
 - Suporte a Tasy, MV, SISS, iClinic, SHOSP, Doctoralia, Pixeon (a arquitetura de adaptadores fica pronta; cada PEP novo é ~1 sprint).
 - Aplicativo mobile ou desktop.
 - Integração com o backend privado Supabase/Vercel.
@@ -68,4 +68,4 @@ Três ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quarto
 | M1 — Base estável | 09/10/2026 | Extração do Amplimed funciona de novo; CI verde; `docker compose up` |
 | M2 — Consulta confiável | 06/11/2026 | Login, banco relacional, gravação com consentimento e transcrição via provedor pago, papéis Médico/Paciente |
 | M3 — Da conversa ao prontuário | 04/12/2026 | SOAP + CID‑10 gerado, editado e inserido no Amplimed; leitura no e‑SUS PEC |
-| M4 — Release v4.0 | 15/01/2027 | Relatório de avaliação, piloto, vídeos, tag `v4.0.0`, docs atualizados |
+| M4 — Release v5.0 | 15/01/2027 | Relatório de avaliação, piloto, vídeos, tag `v5.0.0`, docs atualizados |

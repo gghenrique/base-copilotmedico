@@ -31,7 +31,6 @@ API/backend/patients_db.json
 
 # Ferramentas locais
 .remember/
-.claude/
 .vscode/
 .idea/
 .DS_Store

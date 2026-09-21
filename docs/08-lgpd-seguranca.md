@@ -1,6 +1,6 @@
 # 08 — LGPD e segurança
 
-O CoPilot Médico trata **dados pessoais sensíveis** (dados de saúde, LGPD art. 5º, II) de pacientes que não são usuários do sistema, em nome de um médico (controlador). Este documento define o mínimo que a v4.0 precisa ter para ser usada num piloto com segurança jurídica razoável. Não substitui parecer jurídico.
+O CoPilot Médico trata **dados pessoais sensíveis** (dados de saúde, LGPD art. 5º, II) de pacientes que não são usuários do sistema, em nome de um médico (controlador). Este documento define o mínimo que a v5.0 precisa ter para ser usada num piloto com segurança jurídica razoável. Não substitui parecer jurídico.
 
 ## 1. Papéis e bases legais
 

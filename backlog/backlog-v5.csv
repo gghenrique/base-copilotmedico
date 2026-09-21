@@ -64,4 +64,4 @@ B62,S7,Release,fix,Bugs do piloto e cobertura mínima,Fechar bugs abertos; cober
 B63,S7,Release,chore,Revisão de segurança,gitleaks pip-audit npm audit manifest health sem chaves,Checklist do doc 08 assinado,3,ADR-08
 B64,S7,Release,docs,Docs atualizados e manual do médico,Requisitos arquitetura ADRs changelog manual de instalação e consentimento,docs/ revisado pelo PO,5,US024
 B65,S7,Release,docs,Vídeo pitch e relatório técnico,Padrão REACT Labs; casos sintéticos; Amplimed e PEC,Dois vídeos publicados,5,US024
-B66,S7,Release,chore,Release v4.0.0 e handoff,Tag release notes dist.zip README para a próxima equipe,Tag criada; próximo ciclo listado no doc 10,2,US024
+B66,S7,Release,chore,Release v5.0.0 e handoff,Tag release notes dist.zip README para a próxima equipe,Tag criada; próximo ciclo listado no doc 10,2,US024

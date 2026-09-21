@@ -1,4 +1,4 @@
-# 01 — Histórico dos três semestres
+# 01 — Histórico dos quatro ciclos
 
 Este documento reconstrói o que cada equipe fez, extraído dos seis vídeos (pitch + relatório técnico por equipe) e do histórico git dos dois repositórios. A leitura deste arquivo é a primeira tarefa da Sprint 0.
 
@@ -25,7 +25,7 @@ timeline
            : Supabase + Vercel + Groq Whisper
            : SOAP, receitas, atestados, 9 PEPs
            : Hoje offline
-    2026.2 : Nova equipe (este projeto) — v4.0
+    2026.2 : Nova equipe (este projeto) — v5.0
            : Da conversa ao prontuário
 ```
 
@@ -123,14 +123,14 @@ Não faz parte do histórico acadêmico, mas é a referência mais completa do q
 - Detecção de 9 prontuários (Tasy, MV, SISS, e‑SUS PEC, iClinic, SHOSP, Amplimed, Doctoralia, Pixeon) com seletores CSS por sistema; **injeção do SOAP formatado** no campo de evolução de cada PEP; widget flutuante com auto‑gravação e detecção de silêncio; cache de 20 SOAPs, fila offline, badge.
 - Estado em 15/09/2026: o deploy Vercel responde `402 DEPLOYMENT_DISABLED`; a extensão não funciona sem ele.
 
-O que a v4.0 **absorve** dessa trilha: o conceito de SOAP estruturado com CID‑10, o padrão de adaptador por PEP com escrita de volta, e o fluxo "gravar → SOAP → inserir no prontuário". O que **não** absorve: Supabase/Vercel (stack diferente da acadêmica), receitas e atestados com IA (fora do escopo por responsabilidade legal), suporte a 9 PEPs (inviável em 4 meses).
+O que a v5.0 **absorve** dessa trilha: o conceito de SOAP estruturado com CID‑10, o padrão de adaptador por PEP com escrita de volta, e o fluxo "gravar → SOAP → inserir no prontuário". O que **não** absorve: Supabase/Vercel (stack diferente da acadêmica), receitas e atestados com IA (fora do escopo por responsabilidade legal), suporte a 9 PEPs (inviável em 4 meses).
 
 ---
 
-## Padrões que atravessam os três ciclos
+## Padrões que atravessam os quatro ciclos
 
-1. **Cada equipe recomeça a documentação.** O único documento de requisitos é da Equipe 4; a Equipe 6 não o atualizou. A v4.0 deve manter `docs/` vivo dentro do repositório.
-2. **Nada é medido.** Nenhum ciclo mediu qualidade da transcrição ou das hipóteses. A v4.0 introduz um conjunto de casos de referência.
+1. **Cada equipe recomeça a documentação.** O único documento de requisitos é da Equipe 4; a Equipe 6 não o atualizou. A v5.0 deve manter `docs/` vivo dentro do repositório.
+2. **Nada é medido.** Nenhum ciclo mediu qualidade da transcrição ou das hipóteses. A v5.0 introduz um conjunto de casos de referência.
 3. **Testes chegam no fim e não rodam no CI.** A Equipe 6 escreveu 532 linhas de testes, mas o workflow só builda o front.
-4. **O médico valida tudo** — dito nos três pitches. A v4.0 transforma isso em regra de produto: nenhuma saída da IA entra no prontuário sem o médico editar/aprovar.
+4. **O médico valida tudo** — dito nos três pitches. A v5.0 transforma isso em regra de produto: nenhuma saída da IA entra no prontuário sem o médico editar/aprovar.
 5. **Privacidade é prometida, parcialmente entregue.** "Roda localmente e remove o nome" é verdade só para nomes de pessoa; CPF, telefone, endereço e datas passam.

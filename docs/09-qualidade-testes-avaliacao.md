@@ -46,7 +46,7 @@ Herança: os 7 arquivos de teste da Equipe 6 são consertados na Sprint 1 (alvos
 
 ### 3.2 Métricas
 
-| Métrica | Como | Meta v4.0 |
+| Métrica | Como | Meta v5.0 |
 |---|---|---|
 | WER (transcrição) | `jiwer` sobre os 10 áudios × provedor | ≤ 20 % (pago); reportar Vosk |
 | Acerto de papel | turnos com papel correto / total | ≥ 80 % |
@@ -67,7 +67,7 @@ make eval            # roda tudo com o provedor configurado em .env
 make eval PROVIDER=vosk
 ```
 
-Gera `eval/reports/YYYY-MM-DD-<provedor>-<prompt_versao>.md` com tabela por caso e agregados. O relatório da release entra em `docs/releases/v4.0.0-eval.md`. Comparar relatórios ao trocar prompt ou provedor é obrigatório antes de mesclar.
+Gera `eval/reports/YYYY-MM-DD-<provedor>-<prompt_versao>.md` com tabela por caso e agregados. O relatório da release entra em `docs/releases/v5.0.0-eval.md`. Comparar relatórios ao trocar prompt ou provedor é obrigatório antes de mesclar.
 
 ## 4. Piloto com médicos (Sprint 6)
 

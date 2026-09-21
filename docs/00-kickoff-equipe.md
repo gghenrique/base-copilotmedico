@@ -1,4 +1,4 @@
-# CoPilot Médico 4.0 — Kickoff da equipe 2026.2
+# CoPilot Médico 5.0 — Kickoff da equipe 2026.2
 
 **De:** Dr. Rui Pontes (cliente / Product Owner)
 **Para:** equipe de Engenharia de Software — ciclo 2026.2
@@ -7,9 +7,9 @@
 
 ---
 
-## Bem‑vindos ao quarto ciclo
+## Bem‑vindos ao quinto ciclo
 
-O CoPilot Médico é uma extensão do Chrome que assiste o médico durante a consulta: lê o prontuário eletrônico, ouve a conversa, recebe exames em PDF e conversa com uma IA para apoiar a decisão clínica. Três equipes já passaram por aqui — a Equipe 3 (2024.2) fez a prova de conceito com GPT‑4, a Equipe 4 (2025.1) migrou para o Gemini e cuidou de privacidade e histórico, a Equipe 6 (2025.2) colocou a gravação de áudio com identificação de quem fala.
+O CoPilot Médico é uma extensão do Chrome que assiste o médico durante a consulta: lê o prontuário eletrônico, ouve a conversa, recebe exames em PDF e conversa com uma IA para apoiar a decisão clínica. Quatro equipes já passaram por aqui — a Equipe 3 (2024.2) fez a prova de conceito com GPT‑4, a Equipe 4 (2025.1) migrou para o Gemini e cuidou de privacidade e histórico, a Equipe 6 (2025.2) colocou a gravação de áudio com identificação de quem fala.
 
 Vocês recebem uma base que **funciona como demonstração**, mas ainda não como ferramenta de uso diário. O tema do ciclo de vocês é fechar essa distância e entregar a primeira funcionalidade de valor clínico direto:
 
@@ -32,7 +32,7 @@ Vocês recebem uma base que **funciona como demonstração**, mas ainda não com
 | M1 — Base estável | 09/10 | Extração do Amplimed funciona de novo; CI verde com testes; `docker compose up` sobe tudo |
 | M2 — Consulta confiável | 06/11 | Login por médico; banco relacional; gravação com consentimento e transcrição via Gemini com papéis médico/paciente |
 | M3 — Da conversa ao prontuário | 04/12 | SOAP com CID‑10 gerado, editado, aprovado e inserido no Amplimed; leitura e escrita no e‑SUS PEC |
-| M4 — Release v4.0 | 15/01 | Relatório de avaliação com métricas, piloto com médicos, vídeos, tag `v4.0.0` |
+| M4 — Release v5.0 | 15/01 | Relatório de avaliação com métricas, piloto com médicos, vídeos, tag `v5.0.0` |
 
 Oito sprints de duas semanas, review toda sexta da segunda semana comigo presente. Recesso de 21/12 a 03/01.
 
@@ -49,7 +49,7 @@ Checklist para cada pessoa:
 Checklist da equipe:
 
 6. Definir papéis (abaixo) e me mandar a lista até **sexta 19/09**.
-7. Criar o quadro no GitHub Projects e importar `backlog/backlog-v4.csv` (66 itens, já estimados e distribuídos por sprint).
+7. Criar o quadro no GitHub Projects e importar `backlog/backlog-v5.csv` (66 itens, já estimados e distribuídos por sprint).
 8. Uma pessoa instala o e‑SUS PEC em Docker e documenta em `docs/` (item B06). Se travar por mais de dois dias, me avisem.
 9. Planejamento da Sprint 1 na segunda 28/09, 60 minutos, comigo.
 
@@ -101,7 +101,7 @@ Estão em `docs/10`, seção "Decisões pendentes". As que afetam vocês cedo: q
 | `docs/10` | Riscos e decisões pendentes | Scrum master |
 | `docs/anexos/A` | Transcrições dos seis vídeos | Consulta |
 | `docs/anexos/B` | Inventário técnico dos repositórios | Consulta |
-| `backlog/backlog-v4.csv` | 66 itens, 256 pontos, por sprint | Importar no quadro |
+| `backlog/backlog-v5.csv` | 66 itens, 256 pontos, por sprint | Importar no quadro |
 
 Bom ciclo. A régua é simples: cada sprint termina com algo que eu consigo usar numa consulta simulada.
 

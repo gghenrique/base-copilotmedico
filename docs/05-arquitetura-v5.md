@@ -1,4 +1,4 @@
-# 05 — Arquitetura alvo da v4.0 e decisões (ADRs)
+# 05 — Arquitetura alvo da v5.0 e decisões (ADRs)
 
 ## 1. Visão de contexto
 
@@ -13,7 +13,7 @@ flowchart LR
     API -.->|nunca| PII[(Nome, CPF, telefone…<br/>só no mapa local cifrado)]
 ```
 
-O desenho mantém a topologia dos três ciclos anteriores (extensão ⇄ Flask ⇄ Gemini) e troca as partes frágeis: banco JSON → relacional; sem auth → JWT; Google SR não oficial → provedor configurável; anonimização de nomes → pseudonimização completa; chat livre → chat + SOAP estruturado; scraping fixo → adaptadores de PEP.
+O desenho mantém a topologia dos quatro ciclos anteriores (extensão ⇄ Flask ⇄ Gemini) e troca as partes frágeis: banco JSON → relacional; sem auth → JWT; Google SR não oficial → provedor configurável; anonimização de nomes → pseudonimização completa; chat livre → chat + SOAP estruturado; scraping fixo → adaptadores de PEP.
 
 ## 2. Containers e módulos
 
