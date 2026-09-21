@@ -46,7 +46,7 @@ Equipes anteriores tiveram entre 6 e 9 contribuidores ativos; o plano assume 6�
 - Commits: Conventional Commits em português ou inglês (`feat:`, `fix:`, `docs:`, `test:`, `chore:`), referenciando a estória (`feat(soap): gera SoapV1 via response_schema (US018)`).
 - PR: template com **Objetivo / Como testar / Checklist** (CI verde, teste incluído, sem PII, docs atualizados, screenshot se UI). Um revisor obrigatório da outra "ponta" (front revisa back e vice‑versa uma vez por sprint para espalhar conhecimento).
 - Merge: squash em `develop`; `main` recebe merge da `develop` só na release, com tag `vX.Y.Z`.
-- Versionamento: `4.0.0-alpha.N` durante o semestre; `4.0.0` em M4.
+- Versionamento: `5.0.0-alpha.N` durante o semestre; `5.0.0` em M4.
 
 ## Definição de pronto
 

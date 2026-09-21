@@ -302,7 +302,11 @@ function PatientsPage({ token, patients, loading, error, onRefresh, onCreatePati
                       {item.source_url && (
                         <div className="metadata-row">
                           <span>Fonte</span>
-                          <a href={item.source_url} target="_blank" rel="noreferrer">{item.source_url}</a>
+                          {/^https?:\/\//i.test(item.source_url) ? (
+                            <a href={item.source_url} target="_blank" rel="noreferrer">{item.source_url}</a>
+                          ) : (
+                            <span>{item.source_url}</span>
+                          )}
                         </div>
                       )}
                       <div className="structured-content">
