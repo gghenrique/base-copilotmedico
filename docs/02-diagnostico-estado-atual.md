@@ -1,6 +1,61 @@
-# 02 — Diagnóstico do estado atual (base v3.0, branch `develop` da Equipe 6)
+# 02 — Diagnóstico do estado atual (base v4.0 = v3.0 da Equipe 6 + delta do Grupo 2)
 
 Auditoria feita em 15/09/2026 sobre o clone do repositório `Jamuelton/copilot_medico_grupo_6_es` (branch `develop`, último commit 01/12/2025) e sobre a extensão privada v2.3. Cada achado tem um ID (`D‑nn`) referenciado no backlog.
+
+## 0. Atualização de 20/09/2026 — o que o Grupo 2 (2026.1, v4.0) mudou
+
+As seções 1–6 descrevem a v3.0 e foram mantidas como referência. Em 20/09/2026 o PO recebeu o fork `qleticia/copilot_medico_grupo_2_es` (24 commits, 05–14/07/2026) e sua documentação; a árvore final foi integrada em `develop` (commit "feat: integra o trabalho do Grupo 2"). Esta seção registra o que mudou em relação aos achados D‑01…D‑21 e lista os achados novos D‑22…D‑34. **A base de partida da v5.0 é esta.**
+
+### 0.1 Delta em números
+
+37 arquivos, +4.570/−362 linhas (sem lock, modelos e `.pyc`). Novos: `API/backend/auth_service.py` (521), `auth_decorators.py` (46), `front/copmed-web/` (web app React/Vite, ~1.900 linhas), `front/copmed-extension/src/services/api.ts` (168). Modificados: `API/server.py` (581 → 1.070 linhas), `patient_db.py` (+177), `config.py` (agora usado), `App.tsx` (1.752 → 1.972), `background.js`, `test_server_api.py` (+224), `test_patient_db.py` (+59), `README.md`. Nada foi removido.
+
+### 0.2 Situação dos achados de 15/09
+
+| ID | Achado (v3.0) | Situação na v4.0 | Evidência |
+|---|---|---|---|
+| D‑01 | Extração do Amplimed quebrada (rota inexistente) | **Mitigado** | `POST /api/extension/extracted-data` + alias `/api/extracted-data` (`server.py:709-718`); popup envia via `services/api.ts`. Os dois conjuntos de seletores divergentes continuam (`App.tsx:746-747` vs `content.js`) |
+| D‑02 | Botão flutuante comentado | Não tocado | `content.js` sem alteração |
+| D‑03 | `MODO_TESTE_SOZINHO = True` | Não tocado; o README novo documenta a flag como uso normal | `audio_service.py:17`; README do grupo l.72-73 |
+| D‑04 | Transcrição por `recognize_google` | Não tocado | |
+| D‑05 | `audioop` / Python 3.13 | Não tocado | |
+| D‑06 | Sessão Gemini recriada / SDK legado | Não tocado | `gemini_connection.py` idêntico |
+| D‑07 | Prompt misto com referências inventadas | Não tocado | `Co-Pilot_medico.txt` idêntico |
+| D‑08 | Código morto | Parcial | `config.py` passou a ser usado; `worker.py`, `audio_listener.py`, `manifest_modified.json`, `patient_data.txt`, `Form/index.tsx` e funções legadas continuam |
+| D‑09 | Seed "João Silva" | Não tocado | `server.py:998-999` |
+| D‑10 | Banco JSON único, nome em claro | Não tocado; padrão replicado em `users_db.json` | `auth_service.py:196-201` |
+| D‑11 | Anonimização só de nomes | Não tocado; conteúdo bruto da extensão gravado sem filtro | `server.py:676-682` (filtro só na cópia enviada ao Gemini, l.689) |
+| D‑12 | Sem consentimento de gravação | Não tocado | |
+| D‑13 | Áudio temporário / transcrição no JSON | Não tocado (metadados a mais) | `server.py:463-467` |
+| D‑14 | API sem autenticação, CORS aberto | **Resolvido com ressalvas** | Todas as rotas exigem token + perfil; CORS ainda `*` por padrão (`config.py:28`); sem `AUTH_SECRET_KEY` → 500 |
+| D‑15 | Content script em `<all_urls>` | Não tocado | `manifest.json` idêntico |
+| D‑16 | Sem `.env.example` | Parcial; piorou no backend | Existe só `front/copmed-web/.env.example`; 8 variáveis novas (`AUTH_*`, `CORS_ORIGINS`) sem documentação |
+| D‑17 | Testes fora do CI, patch inconsistente | **Piorou** | CI idêntico; 16 testes chamam rotas sem `Authorization` e quebram por 401, incluindo 2 escritos pelo próprio grupo (`test_server_api.py:236,261`) |
+| D‑18 | `App.tsx` monolítico | **Piorou** | 1.972 linhas (login, app e roteador de sessão no mesmo arquivo) |
+| D‑19 | Modelos Vosk no git | Não tocado | |
+| D‑20 | Docs desatualizados | Parcial | README reescrito e `copmed-web/README.md` criado; `Requisitos.md` e diagramas intocados; autenticação e web app fora da seção de execução |
+| D‑21 | Repositórios dispersos | Piorou, depois resolvido | Terceiro fork pessoal sem PR de volta; árvore integrada em `ruypontes/copilot-medico` em 20/09 |
+
+### 0.3 Achados novos (v4.0)
+
+- **D‑22 (crítico) — Instalação padrão inacessível.** Sem `AUTH_BOOTSTRAP_EMAIL`/`AUTH_BOOTSTRAP_PASSWORD` nenhum admin é criado (`auth_service.py:204-217`); `register-doctor` só cria médicos `pending`; aprovar exige admin → ninguém consegue entrar. Nenhum documento cita essas variáveis.
+- **D‑23 (crítico) — 500 em vez de 401 sem `AUTH_SECRET_KEY`** (`auth_service.py:140-144`, com `lru_cache`).
+- **D‑24 (crítico) — Médico não vê nem acessa pacientes legados.** Os 3 pacientes de `patients_db.json` têm `doctor_id` nulo; `patient_belongs_to_current_user` devolve falso → `/api/all-patients` vazio e 403 nas demais rotas (`server.py:102-110, 918-924`). Sem migração.
+- **D‑25 — PyJWT ausente do `requirements.txt`**: o caminho executado é um HS256 artesanal (`auth_service.py:107-137`); os dois caminhos validam claims diferentes.
+- **D‑26 — Sem política de senha, rate limit ou lockout** no login; `register-doctor` é pública e grava em disco.
+- **D‑27 — Token em `localStorage` na web** (`api.js:8-9`); sem checagem de `exp` nem tratamento central de 401 em nenhum cliente; sessão lida uma única vez (`App.jsx:22`).
+- **D‑28 — `background.js` com URL fixa** `http://localhost:3001/...` em vez de `API_URL`.
+- **D‑29 — CI não cobre a entrega:** não builda `copmed-web`, não roda pytest nem ESLint. Sem testes de front.
+- **D‑30 — `docker-compose.yml` sem serviço para a web e sem variáveis `AUTH_*`.**
+- **D‑31 — 5 de 8 telas da web são placeholders** (Agenda, Consulta, Atendimentos, Histórico, Ajustes); Dashboard com 2 de 3 cards fixos.
+- **D‑32 — `.pyc` rastreados e alterados** em `API/backend/__pycache__/`.
+- **D‑33 — `window.prompt`/`window.alert` como UI** em `AdminDoctorsPage.jsx` e `PatientsPage.jsx`.
+- **D‑34 — XSS armazenado via `source_url`** (`PatientsPage.jsx:305`, `href` sem validar esquema) — **corrigido em 20/09** (só `http(s)://` vira link).
+- **Positivo:** nenhuma credencial hardcoded; scrypt para senhas; posse paciente↔médico e consulta↔paciente validadas em todas as rotas; contrato da extensão aceita snake_case e camelCase; `services/api.ts` eliminou os `fetch` espalhados; `.gitignore` na raiz cobrindo `.env`, `__pycache__` e `users_db.json`.
+
+### 0.4 Efeito no plano
+
+Itens do backlog marcados com `reavaliar-grupo2` foram reescritos ou reestimados (B07, B08, B11, B12, B14–B17, B21–B24, B27) e quatro itens foram criados (B67–B70). Decisões novas para o PO: P10 (destino do web app) e P11 (pacientes legados sem médico) no doc 10; risco R13.
 
 ## 1. Inventário rápido
 

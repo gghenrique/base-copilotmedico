@@ -1,67 +1,71 @@
-id,sprint,epico,tipo,titulo,descricao,criterio_de_aceite,pontos,refs
-B01,S0,Base,chore,Organização e visibilidade do repositório,Repositório ruypontes/copilot-medico já criado (privado; histórico da Equipe 6 sem segredos). Transferir para organização com o professor como co-owner; tornar público para habilitar branch protection; convidar a equipe,Equipe com acesso; professor co-owner; repositório público com develop protegida,2,ADR-09;D-21
-B02,S0,Base,chore,Configurar quadro e template de PR,GitHub Projects por sprint; template de PR com checklist LGPD; branch protection inicial em develop,PR sem template é recusado; quadro com colunas Backlog/Sprint/Em andamento/Revisão/Pronto,2,ADR-08
-B03,S0,Base,docs,Onboarding técnico de cada membro,Cada membro sobe backend e extensão localmente e registra no README o que faltou,README com seção Problemas encontrados no onboarding preenchida por todos,3,US013
-B04,S0,Base,docs,Leitura guiada dos docs 01-05,Sessão de 2 h; cada membro apresenta 5 min sobre uma parte do legado,Ata com dúvidas e decisões,2,
-B05,S0,Base,chore,Refinar e estimar backlog S1-S2,Estimar em pontos; quebrar itens > 8,Sprints 1 e 2 planejadas no quadro,2,
-B06,S0,PEP,chore,Subir e-SUS PEC local,Instalar o Docker oficial do PEC em uma máquina e documentar,PEC acessível em localhost com cidadão fictício; guia em docs/,5,R4
-B07,S1,Base,feat,Rota POST pep-import,Criar rota que recebe campos raspados do PEP e registra na consulta,Rota documentada no OpenAPI; teste de contrato,3,US011;D-01
-B08,S1,PEP,fix,Unificar seletores do Amplimed,Um único módulo pep/amplimed.ts usado pelo content script e pelo popup,Duas implementações antigas removidas,3,US011
-B09,S1,PEP,test,Fixture HTML do Amplimed e teste de extração,Página estática com 8 sinais vitais e 4 notas; teste valida extração,Teste passa no CI,3,US011
-B10,S1,Base,chore,CI backend,pytest --cov + ruff em cada PR,Workflow verde; cobertura publicada como artefato,3,US012
-B11,S1,Base,chore,CI frontend e branch protection,eslint + tsc + vite build; develop e main protegidas,Merge bloqueado com CI vermelho,2,US012
-B12,S1,Base,chore,docker compose e .env.example,Backend + PostgreSQL no compose; variáveis documentadas,docker compose up sobe tudo em máquina limpa,3,US013
-B13,S1,Base,chore,Script de download dos modelos Vosk,download_models.py; modelos removidos do git,Clone < 5 MB; script idempotente,2,D-19
-B14,S1,Base,chore,Remover código morto,worker.py audio_listener.py Form placeholder manifest_modified seed João Silva funções legado,Nenhuma referência restante; testes passam,2,D-08;D-09
-B15,S1,Base,test,Consertar testes existentes,Corrigir alvos de patch e migrar unittest para pytest,7 arquivos passando no CI,5,D-17
-B16,S1,Base,test,Testes de contrato das rotas atuais,Um teste por rota cobrindo sucesso e erro de validação,100 % das rotas com teste,5,US012
-B17,S1,Base,refactor,Quebrar App.tsx em features,Separar auth patients consultation recording sem mudar comportamento,Nenhum arquivo > 300 linhas; build e fluxo manual iguais,8,D-18
-B18,S1,Base,docs,Documentar versão do Python e README verificado,Exigir 3.11-3.12 por causa do audioop; README validado por quem não escreveu,README com badge de versão; checklist de onboarding,1,D-05;D-20
-B19,S2,Dados,feat,Modelos SQLAlchemy e Alembic,Tabelas medico paciente pseudonimo consulta mensagem transcricao documento_soap consentimento,Migração inicial aplicada em SQLite e PostgreSQL,5,US015;ADR-02
-B20,S2,Dados,refactor,Repositórios substituindo patient_db.py,Camada de acesso a dados por entidade,patient_db.py removido; testes adaptados,5,US015
-B21,S2,Dados,feat,Script migrate_json_db.py,Migra patients_db.json existente para o banco,Dados de exemplo migram sem perda,2,US015
-B22,S2,Identidade,feat,Registro login e refresh,E-mail + senha com argon2; JWT 15 min + refresh 7 dias,Rotas de auth com testes,5,US014;ADR-07
-B23,S2,Identidade,feat,Middleware JWT e CORS restrito,Todas as rotas exigem token; CORS só para origem da extensão,Rota sem token retorna 401; origem estranha bloqueada,3,US014;D-14
-B24,S2,Identidade,test,Teste de isolamento entre médicos,Médico A não lê nem altera consulta de médico B,Teste automatizado passa,2,US014
-B25,S2,Privacidade,feat,Anonimizador regex,CPF RG CNS telefone e-mail CEP datas completas; tokens estáveis por consulta,Teste com 30 exemplos por padrão,5,US016
-B26,S2,Privacidade,feat,Anonimizador NER e mapa cifrado,spaCy PER/LOC + dicionário de nomes do cadastro; tabela pseudonimo cifrada com chave derivada da senha,Resposta reidratada só na exibição; teste de ida e volta,5,US016;ADR-03
-B27,S2,Identidade,feat,Tela de login na extensão e client de API,Token em chrome.storage.session; renovação automática; fila offline básica,Login funciona; 401 dispara refresh,5,US014
-B28,S3,Áudio,feat,Tela e registro de consentimento,Checkbox obrigatório ou termo anexado; tabela consentimento com versão do texto,Gravação bloqueada sem consentimento,3,US017
-B29,S3,Áudio,feat,Gravação com pausar retomar parar e cronômetro,Limite de 120 min com parada automática,Fluxo manual testado; estado sobrevive ao fechar o popup,3,US017
-B30,S3,Áudio,feat,Upload em chunks de 5 min,Rota audio/chunks com sequência; consulta continua se um chunk falhar,Teste com 3 chunks e um reenvio,5,US017
-B31,S3,Áudio,feat,TranscriptionProvider e Gemini áudio,Interface + implementação padrão com marcação de falantes,Transcrição de áudio de fixture com turnos,5,ADR-04
-B32,S3,Áudio,feat,Provider Whisper via Groq,Implementação alternativa selecionável por .env,Mesmo contrato do provider padrão,3,ADR-04
-B33,S3,Áudio,fix,Provider Vosk local como fallback,Reaproveitar Diarizador; remover MODO_TESTE_SOZINHO; aviso de qualidade na UI,Funciona sem rede; flag removida,3,D-03;D-04
-B34,S3,Áudio,feat,Papéis por turno editáveis,UI para trocar medico/paciente/outro por turno,Edição persiste na transcrição,3,US017
-B35,S3,Áudio,fix,Apagar áudio após transcrição,finally apaga; job diário limpa; teste do caminho de erro,Nenhum wav restante após falha simulada,2,US017
-B36,S3,Privacidade,feat,Auditoria de envios externos e anonimizar turnos,Log sem conteúdo com data consulta provedor tamanho,Tabela de auditoria populada; turnos sem PII,3,US016
-B37,S3,Qualidade,test,Gravar 10 áudios de referência,Duas vozes ambiente de consultório casos sintéticos com transcrição-gabarito,Arquivos em eval/audio via Git LFS,5,US022
-B38,S3,SOAP,feat,Recomendações sobre janela parcial,Rota aceita janela em minutos; botão Sugestões na aba de gravação,Até 5 itens curtos; não gravado no prontuário,3,US020
-B39,S4,SOAP,feat,Schema SoapV1 e tabela documento_soap,pydantic com subjetivo objetivo avaliacao plano hipoteses alertas pendencias,Validação rejeita JSON inválido; migração aplicada,3,US018;ADR-05
-B40,S4,SOAP,feat,Prompt SOAP em PT-BR com response_schema,Prompt versionado sem referências nem percentuais; 1 retry se inválido,JSON válido em 100 % dos 20 casos,5,US018;D-07
-B41,S4,SOAP,refactor,Migrar para google-genai,services/llm/gemini.py com interface de provider; sessão reaproveitada,Chat e SOAP funcionam; SDK antigo removido,3,D-06;ADR-01
-B42,S4,SOAP,feat,Tabela CID-10 embarcada com busca,Arquivo CSV da CID-10 e endpoint de busca por texto ou código,Busca retorna em < 100 ms,3,US018
-B43,S4,SOAP,feat,SoapEditor na extensão,Quatro seções editáveis CID-10 alertas pendências botão Aprovar,Fluxo gerar editar aprovar testado,8,US018
-B44,S4,SOAP,feat,Versões IA e médico com diff,Guardar versao_ia e versao_medico; exibir diferença,Diff visível após edição,3,US018
-B45,S4,Qualidade,test,Escrever 20 casos sintéticos,Casos de atenção primária com gabarito SOAP CID-10 pendências e PII plantada; revisão do PO,20 arquivos em eval/cases aprovados,8,US022
-B46,S4,Qualidade,test,run_eval.py v1,JSON válido completude latência custo por caso e agregado,Relatório markdown gerado,5,US022
-B47,S4,Privacidade,test,Teste de vazamento de PII textual,Roda os 20 casos e falha se PII plantada aparecer no payload mockado,Teste marcado leak bloqueante no CI,3,US016
-B48,S5,PEP,feat,Interface PepAdapter e registry,detect readPatient readClinicalNotes writeEvolution; registro central,Adaptador falso passa nos testes de interface,3,US019;ADR-06
-B49,S5,PEP,feat,AmplimedAdapter escrita e formatSoapForPep,writeEvolution no campo de evolução; formato de texto por PEP,SOAP aparece no campo da fixture e da conta de teste,5,US019
-B50,S5,PEP,feat,EsusPecAdapter leitura e escrita,Cabeçalho do cidadão e campo SOAP do PEC,Leitura e escrita testadas no PEC local,8,US019
-B51,S5,PEP,fix,host_permissions específicos,Remover all_urls; listar domínios do Amplimed e do PEC,Content script não injeta em outros sites,2,D-15
-B52,S5,PEP,fix,Botão flutuante só em PEP detectado,Reativar botão com detecção,Botão ausente fora de PEP,2,D-02
-B53,S5,PEP,feat,Botão Inserir no prontuário,Só habilitado após aprovar; nunca automático,Clique insere; status inserido_no_pep,2,US019
-B54,S5,PEP,test,Fixtures HTML dos dois PEPs e testes Vitest,Fixtures + testes de cada adaptador com jsdom,Testes no CI,5,US019
-B55,S5,Export,feat,Export PDF e Markdown,Rota export com opção de incluir identificação,Arquivos gerados a partir de consulta de fixture,5,US021
-B56,S5,Qualidade,test,E2E Playwright cenário feliz,Chromium com extensão: login paciente gravar fixture SOAP inserir,Roda no CI noturno,5,
-B57,S6,Qualidade,test,run_eval.py completo,WER acerto de papel CID-10 alucinação de exame referências inventadas,Relatório versionado em eval/reports,5,US022
-B58,S6,Piloto,chore,Piloto com médicos,Protocolo agenda consultas simuladas SUS entrevistas,Dois médicos com 10 consultas cada,5,US023
-B59,S6,Piloto,docs,Relatório do piloto,Consolidar métricas SUS e achados; gerar itens de backlog,Relatório de 3 páginas; itens no quadro,3,US023
-B60,S6,Privacidade,test,Teste de vazamento completo,Incluir áudio transcrito e PDF no teste de PII,Zero ocorrências,3,US016
-B61,S6,Piloto,fix,Correções de usabilidade do piloto,Itens prioritários apontados pelos médicos,Itens fechados antes do congelamento,8,US023
-B62,S7,Release,fix,Bugs do piloto e cobertura mínima,Fechar bugs abertos; cobertura backend ≥ 60 %,CI mostra cobertura ≥ 60 %,8,RNF05
-B63,S7,Release,chore,Revisão de segurança,gitleaks pip-audit npm audit manifest health sem chaves,Checklist do doc 08 assinado,3,ADR-08
-B64,S7,Release,docs,Docs atualizados e manual do médico,Requisitos arquitetura ADRs changelog manual de instalação e consentimento,docs/ revisado pelo PO,5,US024
-B65,S7,Release,docs,Vídeo pitch e relatório técnico,Padrão REACT Labs; casos sintéticos; Amplimed e PEC,Dois vídeos publicados,5,US024
-B66,S7,Release,chore,Release v5.0.0 e handoff,Tag release notes dist.zip README para a próxima equipe,Tag criada; próximo ciclo listado no doc 10,2,US024
+id,sprint,epico,tipo,titulo,descricao,criterio_de_aceite,pontos,refs,flags
+B01,S0,Base,chore,Organização e visibilidade do repositório,"Repositório ruypontes/copilot-medico criado (15/09) com a árvore do Grupo 2 integrada (20/09); labels, milestones e issues criados; convites enviados aos usernames GitHub conhecidos. Restam: usernames dos demais membros, transferir para organização com o professor como co-owner, tornar público",Todos os membros com acesso; professor co-owner; repositório público com develop protegida,2,ADR-09;D-21,
+B02,S0,Base,chore,Configurar quadro e template de PR,GitHub Projects por sprint; template de PR com checklist LGPD; branch protection inicial em develop,PR sem template é recusado; quadro com colunas Backlog/Sprint/Em andamento/Revisão/Pronto,2,ADR-08,
+B03,S0,Base,docs,Onboarding técnico de cada membro,Cada membro sobe backend e extensão localmente e registra no README o que faltou,README com seção Problemas encontrados no onboarding preenchida por todos,3,US013,
+B04,S0,Base,docs,Leitura guiada dos docs 01-05,Sessão de 2 h; cada membro apresenta 5 min sobre uma parte do legado,Ata com dúvidas e decisões,2,,
+B05,S0,Base,chore,Refinar e estimar backlog S1-S2,Estimar em pontos; quebrar itens > 8,Sprints 1 e 2 planejadas no quadro,2,,
+B06,S0,PEP,chore,Subir e-SUS PEC local,Instalar o Docker oficial do PEC em uma máquina e documentar,PEC acessível em localhost com cidadão fictício; guia em docs/,5,R4,
+B07,S1,Base,feat,Evoluir POST extension/extracted-data para o contrato pep-import,"A rota do Grupo 2 já recebe conteúdo raspado; evoluir para campos tipados (PEP de origem, sinais vitais, notas), vínculo obrigatório à consulta e alias legado mantido",Rota documentada no OpenAPI; teste de contrato; alias legado coberto,3,US011;D-01,reavaliar-grupo2
+B08,S1,PEP,fix,Unificar seletores do Amplimed,Um único módulo pep/amplimed.ts usado pelo content script e pelo popup (hoje o popup usa .editable-notes/.create-input e o content.js usa outros seletores),Duas implementações antigas removidas,3,US011,reavaliar-grupo2
+B09,S1,PEP,test,Fixture HTML do Amplimed e teste de extração,Página estática com 8 sinais vitais e 4 notas; teste valida extração,Teste passa no CI,3,US011,
+B10,S1,Base,chore,CI backend,pytest --cov + ruff em cada PR,Workflow verde; cobertura publicada como artefato,3,US012,
+B11,S1,Base,chore,CI frontend e branch protection,eslint + tsc + vite build da extensão e da web (copmed-web); develop e main protegidas,Merge bloqueado com CI vermelho,3,US012,reavaliar-grupo2
+B12,S1,Base,chore,docker compose e .env.example,"Backend + PostgreSQL + copmed-web no compose; API/.env.example com GEMINI_API_KEY, AUTH_SECRET_KEY, AUTH_BOOTSTRAP_*, CORS_ORIGINS documentadas",docker compose up sobe tudo em máquina limpa,3,US013,reavaliar-grupo2
+B13,S1,Base,chore,Script de download dos modelos Vosk,download_models.py; modelos removidos do git,Clone < 5 MB; script idempotente,2,D-19,
+B14,S1,Base,chore,Remover código morto,worker.py audio_listener.py Form placeholder manifest_modified seed João Silva funções legado; .pyc rastreados; window.prompt/alert na web,Nenhuma referência restante; testes passam,3,D-08;D-09,reavaliar-grupo2
+B15,S1,Base,test,Consertar testes existentes,"Corrigir alvos de patch, migrar unittest para pytest e criar fixture de autenticação para os 16 testes que quebram por 401 (D-17)",7 arquivos passando no CI,8,D-17,reavaliar-grupo2
+B16,S1,Base,test,Testes de contrato das rotas atuais,"Um teste por rota cobrindo sucesso, erro de validação e 401/403 (20 rotas após o Grupo 2)",100 % das rotas com teste,5,US012,reavaliar-grupo2
+B17,S1,Base,refactor,Quebrar App.tsx em features,Separar auth patients consultation recording sem mudar comportamento (App.tsx tem 1.972 linhas com login e roteador de sessão),Nenhum arquivo > 300 linhas; build e fluxo manual iguais,8,D-18,reavaliar-grupo2
+B18,S1,Base,docs,Documentar versão do Python e README verificado,Exigir 3.11-3.12 por causa do audioop; README validado por quem não escreveu,README com badge de versão; checklist de onboarding,1,D-05;D-20,
+B19,S2,Dados,feat,Modelos SQLAlchemy e Alembic,Tabelas medico paciente pseudonimo consulta mensagem transcricao documento_soap consentimento,Migração inicial aplicada em SQLite e PostgreSQL,5,US015;ADR-02,
+B20,S2,Dados,refactor,Repositórios substituindo patient_db.py,Camada de acesso a dados por entidade,patient_db.py removido; testes adaptados,5,US015,
+B21,S2,Dados,feat,Script migrate_json_db.py,Migra patients_db.json e users_db.json existentes para o banco,Dados de exemplo migram sem perda,2,US015,reavaliar-grupo2
+B22,S2,Identidade,feat,"Evoluir autenticação: PyJWT + refresh, senha, rate limit",Substituir o HS256 caseiro por PyJWT no requirements; JWT 15 min + refresh 7 dias; política de senha; rate limit e lockout no login; hashes scrypt existentes continuam válidos,Rotas de auth com testes; login sem PyJWT instalado falha o CI,5,US014;ADR-07,reavaliar-grupo2
+B23,S2,Identidade,feat,CORS restrito e bootstrap de admin,CORS_ORIGINS sem * por padrão; script bootstrap_admin documentado; 401 (não 500) quando AUTH_SECRET_KEY faltar,Origem estranha bloqueada; máquina limpa cria admin pelo script; teste do 401,3,US014;D-14,reavaliar-grupo2
+B24,S2,Identidade,test,Teste de isolamento entre médicos,Posse por doctor_id já existe (Grupo 2); cobrir com teste automatizado A/B em todas as rotas,Teste automatizado passa,2,US014,reavaliar-grupo2
+B25,S2,Privacidade,feat,Anonimizador regex,CPF RG CNS telefone e-mail CEP datas completas; tokens estáveis por consulta,Teste com 30 exemplos por padrão,5,US016,
+B26,S2,Privacidade,feat,Anonimizador NER e mapa cifrado,spaCy PER/LOC + dicionário de nomes do cadastro; tabela pseudonimo cifrada com chave derivada da senha,Resposta reidratada só na exibição; teste de ida e volta,5,US016;ADR-03,
+B27,S2,Identidade,feat,"Sessão na extensão e na web: storage.session, renovação e 401",Tela de login e client já existem (Grupo 2); mover token para chrome.storage.session; renovação automática; tratamento central de 401 na extensão e na web; background.js passa a usar API_URL,Login funciona; 401 dispara refresh,5,US014,reavaliar-grupo2
+B28,S3,Áudio,feat,Tela e registro de consentimento,Checkbox obrigatório ou termo anexado; tabela consentimento com versão do texto,Gravação bloqueada sem consentimento,3,US017,
+B29,S3,Áudio,feat,Gravação com pausar retomar parar e cronômetro,Limite de 120 min com parada automática,Fluxo manual testado; estado sobrevive ao fechar o popup,3,US017,
+B30,S3,Áudio,feat,Upload em chunks de 5 min,Rota audio/chunks com sequência; consulta continua se um chunk falhar,Teste com 3 chunks e um reenvio,5,US017,
+B31,S3,Áudio,feat,TranscriptionProvider e Gemini áudio,Interface + implementação padrão com marcação de falantes,Transcrição de áudio de fixture com turnos,5,ADR-04,
+B32,S3,Áudio,feat,Provider Whisper via Groq,Implementação alternativa selecionável por .env,Mesmo contrato do provider padrão,3,ADR-04,
+B33,S3,Áudio,fix,Provider Vosk local como fallback,Reaproveitar Diarizador; remover MODO_TESTE_SOZINHO; aviso de qualidade na UI,Funciona sem rede; flag removida,3,D-03;D-04,
+B34,S3,Áudio,feat,Papéis por turno editáveis,UI para trocar medico/paciente/outro por turno,Edição persiste na transcrição,3,US017,
+B35,S3,Áudio,fix,Apagar áudio após transcrição,finally apaga; job diário limpa; teste do caminho de erro,Nenhum wav restante após falha simulada,2,US017,
+B36,S3,Privacidade,feat,Auditoria de envios externos e anonimizar turnos,Log sem conteúdo com data consulta provedor tamanho,Tabela de auditoria populada; turnos sem PII,3,US016,
+B37,S3,Qualidade,test,Gravar 10 áudios de referência,Duas vozes ambiente de consultório casos sintéticos com transcrição-gabarito,Arquivos em eval/audio via Git LFS,5,US022,
+B38,S3,SOAP,feat,Recomendações sobre janela parcial,Rota aceita janela em minutos; botão Sugestões na aba de gravação,Até 5 itens curtos; não gravado no prontuário,3,US020,
+B39,S4,SOAP,feat,Schema SoapV1 e tabela documento_soap,pydantic com subjetivo objetivo avaliacao plano hipoteses alertas pendencias,Validação rejeita JSON inválido; migração aplicada,3,US018;ADR-05,
+B40,S4,SOAP,feat,Prompt SOAP em PT-BR com response_schema,Prompt versionado sem referências nem percentuais; 1 retry se inválido,JSON válido em 100 % dos 20 casos,5,US018;D-07,
+B41,S4,SOAP,refactor,Migrar para google-genai,services/llm/gemini.py com interface de provider; sessão reaproveitada,Chat e SOAP funcionam; SDK antigo removido,3,D-06;ADR-01,
+B42,S4,SOAP,feat,Tabela CID-10 embarcada com busca,Arquivo CSV da CID-10 e endpoint de busca por texto ou código,Busca retorna em < 100 ms,3,US018,
+B43,S4,SOAP,feat,SoapEditor na extensão,Quatro seções editáveis CID-10 alertas pendências botão Aprovar,Fluxo gerar editar aprovar testado,8,US018,
+B44,S4,SOAP,feat,Versões IA e médico com diff,Guardar versao_ia e versao_medico; exibir diferença,Diff visível após edição,3,US018,
+B45,S4,Qualidade,test,Escrever 20 casos sintéticos,Casos de atenção primária com gabarito SOAP CID-10 pendências e PII plantada; revisão do PO,20 arquivos em eval/cases aprovados,8,US022,
+B46,S4,Qualidade,test,run_eval.py v1,JSON válido completude latência custo por caso e agregado,Relatório markdown gerado,5,US022,
+B47,S4,Privacidade,test,Teste de vazamento de PII textual,Roda os 20 casos e falha se PII plantada aparecer no payload mockado,Teste marcado leak bloqueante no CI,3,US016,
+B48,S5,PEP,feat,Interface PepAdapter e registry,detect readPatient readClinicalNotes writeEvolution; registro central,Adaptador falso passa nos testes de interface,3,US019;ADR-06,
+B49,S5,PEP,feat,AmplimedAdapter escrita e formatSoapForPep,writeEvolution no campo de evolução; formato de texto por PEP,SOAP aparece no campo da fixture e da conta de teste,5,US019,
+B50,S5,PEP,feat,EsusPecAdapter leitura e escrita,Cabeçalho do cidadão e campo SOAP do PEC,Leitura e escrita testadas no PEC local,8,US019,
+B51,S5,PEP,fix,host_permissions específicos,Remover all_urls; listar domínios do Amplimed e do PEC,Content script não injeta em outros sites,2,D-15,
+B52,S5,PEP,fix,Botão flutuante só em PEP detectado,Reativar botão com detecção,Botão ausente fora de PEP,2,D-02,
+B53,S5,PEP,feat,Botão Inserir no prontuário,Só habilitado após aprovar; nunca automático,Clique insere; status inserido_no_pep,2,US019,
+B54,S5,PEP,test,Fixtures HTML dos dois PEPs e testes Vitest,Fixtures + testes de cada adaptador com jsdom,Testes no CI,5,US019,
+B55,S5,Export,feat,Export PDF e Markdown,Rota export com opção de incluir identificação,Arquivos gerados a partir de consulta de fixture,5,US021,
+B56,S5,Qualidade,test,E2E Playwright cenário feliz,Chromium com extensão: login paciente gravar fixture SOAP inserir,Roda no CI noturno,5,,
+B57,S6,Qualidade,test,run_eval.py completo,WER acerto de papel CID-10 alucinação de exame referências inventadas,Relatório versionado em eval/reports,5,US022,
+B58,S6,Piloto,chore,Piloto com médicos,Protocolo agenda consultas simuladas SUS entrevistas,Dois médicos com 10 consultas cada,5,US023,
+B59,S6,Piloto,docs,Relatório do piloto,Consolidar métricas SUS e achados; gerar itens de backlog,Relatório de 3 páginas; itens no quadro,3,US023,
+B60,S6,Privacidade,test,Teste de vazamento completo,Incluir áudio transcrito e PDF no teste de PII,Zero ocorrências,3,US016,
+B61,S6,Piloto,fix,Correções de usabilidade do piloto,Itens prioritários apontados pelos médicos,Itens fechados antes do congelamento,8,US023,
+B62,S7,Release,fix,Bugs do piloto e cobertura mínima,Fechar bugs abertos; cobertura backend ≥ 60 %,CI mostra cobertura ≥ 60 %,8,RNF05,
+B63,S7,Release,chore,Revisão de segurança,gitleaks pip-audit npm audit manifest health sem chaves,Checklist do doc 08 assinado,3,ADR-08,
+B64,S7,Release,docs,Docs atualizados e manual do médico,Requisitos arquitetura ADRs changelog manual de instalação e consentimento,docs/ revisado pelo PO,5,US024,
+B65,S7,Release,docs,Vídeo pitch e relatório técnico,Padrão REACT Labs; casos sintéticos; Amplimed e PEC,Dois vídeos publicados,5,US024,
+B66,S7,Release,chore,Release v5.0.0 e handoff,Tag release notes dist.zip README para a próxima equipe,Tag criada; próximo ciclo listado no doc 10,2,US024,
+B67,S0,Base,chore,"Destravar a instalação (bootstrap, segredo, variáveis)","Documentar AUTH_SECRET_KEY, AUTH_BOOTSTRAP_EMAIL/PASSWORD, CORS_ORIGINS e users_db.json em API/.env.example e README; adicionar PyJWT e pydantic-settings ao requirements; compose com essas variáveis",Máquina limpa sobe backend + web e faz login como admin seguindo só o README,3,D-22;D-23;D-25;D-30,
+B68,S1,Identidade,fix,Migrar pacientes legados sem doctor_id,Script que atribui doctor_id conforme P11 (apagar o seed João Silva; demais para o médico do piloto); back-fill também na leitura,Médico aprovado vê seus pacientes; teste cobre D-24,2,D-24;P11,decisao-po
+B69,S1,Privacidade,fix,Anonimizar conteúdo bruto da extensão antes de gravar,Aplicar o anonimizador em extension_data.content (hoje só na cópia enviada ao Gemini),Teste com nome plantado: nenhum nome em extension_data,2,D-11,
+B70,S0,Base,docs,Decidir escopo do sistema gerenciador web (P10),"Reunião com o PO: manter só login/pacientes/admin, evoluir Consulta/Histórico, ou congelar; registrar no doc 10 e em ADR-10",Decisão registrada; itens da web no backlog conforme a opção,1,P10;D-31,decisao-po

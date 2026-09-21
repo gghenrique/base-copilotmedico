@@ -1,5 +1,7 @@
 # 04 — Documento de Requisitos — CoPilot Médico v5.0
 
+> **Numeração:** US001–US010 são da Equipe 4 (2025); US011–US024 são deste plano. As US01–US12 do PDF do Grupo 2 (anexo C) usam numeração própria e não coincidem com estas.
+
 **Histórico de versões**
 
 | Data | Versão | Descrição | Autor |
@@ -52,6 +54,8 @@ A numeração continua a do documento de 2025 para preservar rastreabilidade. O 
 ### Épico B — Identidade e dados
 
 #### US014 — Como médico, desejo entrar com e‑mail e senha, para que só eu veja meus pacientes e consultas.
+
+> **Estado em 20/09/2026:** login por e‑mail/senha/perfil, aprovação de médicos pelo admin e posse por `doctor_id` já existem (Grupo 2, v4.0). Esta US passa a cobrir a *evolução*: PyJWT real + refresh, política de senha, rate limit, bootstrap documentado e migração dos pacientes legados (D‑22…D‑26).
 - CA001 — Cadastro e login com senha (bcrypt/argon2) e token JWT de curta duração + refresh.
 - CA002 — Toda rota `/api/*` exige token; rota sem token retorna 401.
 - CA003 — Dados de paciente e consulta são filtrados pelo médico autenticado; teste garante que médico A não lê consulta de médico B.

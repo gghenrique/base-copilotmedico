@@ -28,12 +28,13 @@ Quatro ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quint
 - **Dr. Rui (cliente, PO).** Quer validar se a IA ajuda de fato antes de investir mais; precisa de métricas e de LGPD defensável.
 - **Médico de UBS (e‑SUS PEC).** Sem verba para software pago; usa o PEC do Ministério da Saúde; precisa que a extensão funcione sem instalar servidor (Docker no próprio computador).
 - **Equipe 2026.2 (alunos).** 6–8 pessoas, 4 meses, notas dependem de entregas visíveis; precisam de tarefas pequenas e claras.
+- **Administrador da clínica.** Aprova cadastros de médicos e enxerga toda a base; perfil criado pelo Grupo 2 e usado pelo PO durante o piloto.
 
 ## Escopo — dentro
 
 1. **Consolidação** da base v3.0 (diagnóstico D‑01…D‑21 priorizados).
 2. **Persistência relacional** (SQLite em dev, PostgreSQL via Docker) com pseudonimização do paciente.
-3. **Autenticação** de médico (e‑mail + senha, JWT) e isolamento de dados por médico.
+3. **Autenticação** — evoluir a entregue pelo Grupo 2 (login por perfil, aprovação de médicos): PyJWT real com expiração e refresh, política de senha e rate limit, bootstrap do administrador documentado, isolamento por médico com migração dos pacientes legados.
 4. **Pipeline de áudio v2:** consentimento registrado, gravação com pausa, envio em partes, transcrição por provedor pago (Gemini áudio ou Whisper), diarização por papel, fallback offline com Vosk.
 5. **SOAP estruturado** com CID‑10 sugerido, gerado como JSON validado, editável na extensão, com trilha "gerado pela IA / editado pelo médico".
 6. **Recomendações durante a consulta** (já existe) mantidas e testadas.
@@ -42,6 +43,7 @@ Quatro ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quint
 9. **Avaliação:** 20 casos clínicos sintéticos, 10 áudios de referência, métricas automáticas, piloto com médicos.
 10. **Exportar consulta** em PDF/Markdown (fecha US010 de 2025).
 11. **Documentação viva** em `docs/`, vídeos de pitch e relatório técnico.
+12. **Sistema gerenciador web** (`front/copmed-web`, herdado do Grupo 2): mantido funcional e integrado à autenticação (login, pacientes, aprovação de médicos). Evoluir as telas placeholder depende da decisão P10.
 
 ## Escopo — fora (decisão consciente)
 
@@ -52,6 +54,7 @@ Quatro ciclos construíram a *entrada* (prontuário, PDF, áudio, chat). O quint
 - Integração com o backend privado Supabase/Vercel.
 - Faturamento, planos, multi‑clínica.
 - Diagnóstico automático "final" — a IA sugere, o médico decide (regra de produto inegociável).
+- Telas placeholder do web app (Agenda, Atendimentos, Relatórios, Ajustes) — só entram se o PO decidir em P10.
 
 ## Princípios de produto
 

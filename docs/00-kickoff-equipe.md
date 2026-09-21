@@ -9,7 +9,7 @@
 
 ## Bem‑vindos ao quinto ciclo
 
-O CoPilot Médico é uma extensão do Chrome que assiste o médico durante a consulta: lê o prontuário eletrônico, ouve a conversa, recebe exames em PDF e conversa com uma IA para apoiar a decisão clínica. Quatro equipes já passaram por aqui — a Equipe 3 (2024.2) fez a prova de conceito com GPT‑4, a Equipe 4 (2025.1) migrou para o Gemini e cuidou de privacidade e histórico, a Equipe 6 (2025.2) colocou a gravação de áudio com identificação de quem fala.
+O CoPilot Médico é uma extensão do Chrome que assiste o médico durante a consulta: lê o prontuário eletrônico, ouve a conversa, recebe exames em PDF e conversa com uma IA para apoiar a decisão clínica. Quatro equipes já passaram por aqui — a Equipe 3 (2024.2) fez a prova de conceito com GPT‑4, a Equipe 4 (2025.1) migrou para o Gemini e cuidou de privacidade e histórico, a Equipe 6 (2025.2) colocou a gravação de áudio com identificação de quem fala, e o Grupo 2 (2026.1) adicionou login com perfis, aprovação de médicos e um sistema gerenciador web.
 
 Vocês recebem uma base que **funciona como demonstração**, mas ainda não como ferramenta de uso diário. O tema do ciclo de vocês é fechar essa distância e entregar a primeira funcionalidade de valor clínico direto:
 
@@ -21,7 +21,7 @@ Vocês recebem uma base que **funciona como demonstração**, mas ainda não com
 |---|---|
 | Transcrição de áudio | **Gemini áudio** (mesma chave do chat; devolve transcrição com falantes). Vosk local continua como plano B offline |
 | Segundo prontuário além do Amplimed | **e‑SUS PEC** (prontuário público do Ministério da Saúde; roda em Docker local) |
-| Repositório | `ruypontes/copilot-medico` — código da v3.0 com o histórico das equipes anteriores + pasta `docs/` com todo o planejamento |
+| Repositório | `ruypontes/copilot-medico` — código da v4.0 (Equipe 6 + Grupo 2) com o histórico das equipes anteriores + pasta `docs/` com todo o planejamento; issues, labels e milestones já criados |
 | Stack | Mantida: extensão React + TypeScript, backend Flask, Gemini. Sem migração de framework |
 | Fora do escopo | Receitas e atestados por IA, Chrome Web Store, outros prontuários além dos dois, app mobile |
 
@@ -30,7 +30,7 @@ Vocês recebem uma base que **funciona como demonstração**, mas ainda não com
 | Marco | Data | O que eu vou testar na review |
 |---|---|---|
 | M1 — Base estável | 09/10 | Extração do Amplimed funciona de novo; CI verde com testes; `docker compose up` sobe tudo |
-| M2 — Consulta confiável | 06/11 | Login por médico; banco relacional; gravação com consentimento e transcrição via Gemini com papéis médico/paciente |
+| M2 — Consulta confiável | 06/11 | Login por médico (evoluído do Grupo 2); banco relacional; gravação com consentimento e transcrição via Gemini com papéis médico/paciente |
 | M3 — Da conversa ao prontuário | 04/12 | SOAP com CID‑10 gerado, editado, aprovado e inserido no Amplimed; leitura e escrita no e‑SUS PEC |
 | M4 — Release v5.0 | 15/01 | Relatório de avaliação com métricas, piloto com médicos, vídeos, tag `v5.0.0` |
 
@@ -49,7 +49,7 @@ Checklist para cada pessoa:
 Checklist da equipe:
 
 6. Definir papéis (abaixo) e me mandar a lista até **sexta 19/09**.
-7. Criar o quadro no GitHub Projects e importar `backlog/backlog-v5.csv` (66 itens, já estimados e distribuídos por sprint).
+7. Criar o quadro no GitHub Projects e importar `backlog/backlog-v5.csv` (70 itens, já estimados e distribuídos por sprint).
 8. Uma pessoa instala o e‑SUS PEC em Docker e documenta em `docs/` (item B06). Se travar por mais de dois dias, me avisem.
 9. Planejamento da Sprint 1 na segunda 28/09, 60 minutos, comigo.
 

@@ -40,7 +40,8 @@ gantt
 **Objetivo:** todo mundo com o projeto rodando e o backlog refinado.
 
 - Leitura guiada dos docs 01–05; cada membro apresenta 5 min sobre uma parte do código legado.
-- Criar organização + repositório único (ADR‑09); importar histórico da branch `develop`.
+- ~~Criar organização + repositório único (ADR‑09); importar histórico da branch `develop`.~~ Feito em 15/09 (`ruypontes/copilot-medico`) e 20/09 (árvore do Grupo 2 integrada; labels, milestones e issues criados; equipe sendo convidada). Resta: transferir para organização e tornar público (P6).
+- B67: destravar a instalação — `API/.env.example` com `AUTH_SECRET_KEY`, `AUTH_BOOTSTRAP_*`, `CORS_ORIGINS`; PyJWT no `requirements.txt`. B70: decisão P10 sobre o web app.
 - Definir papéis (doc 07), quadro (GitHub Projects), convenções de branch/PR.
 - Cada membro sobe backend + extensão localmente e registra no README o que faltou.
 - ~~PO decide os itens pendentes do doc 10 (provedor de transcrição, segundo PEP).~~ Decidido em 15/09/2026: Gemini áudio e e‑SUS PEC. Restam P2, P4, P5, P7–P9.
@@ -66,9 +67,9 @@ gantt
 **Objetivo:** multiusuário com dados protegidos.
 
 - US015: modelos SQLAlchemy + Alembic; migrar `patients_db.json`; trocar `patient_db.py` por repositórios.
-- US014: registro/login/refresh; middleware JWT; CORS restrito; testes de isolamento entre médicos.
+- US014: evoluir a autenticação do Grupo 2 — PyJWT + refresh, política de senha, rate limit, bootstrap documentado, migração dos pacientes legados (B68); CORS restrito; testes de isolamento entre médicos.
 - US016 (parte 1): `anonymizer/regex.py` (CPF, RG, CNS, telefone, e‑mail, CEP, datas) + NER; tokens estáveis; tabela `pseudonimo` cifrada.
-- Front: tela de login; token em `chrome.storage.session`; client de API com renovação.
+- Front: a tela de login e o client (`services/api.ts`) já existem; mover o token para `chrome.storage.session`, renovação automática e tratamento central de 401 na extensão e na web.
 
 **Demo:** dois médicos com pacientes separados; payload enviado ao Gemini exibido lado a lado com o texto original (mostrando tokens).
 

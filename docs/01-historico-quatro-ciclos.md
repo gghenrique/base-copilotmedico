@@ -1,6 +1,6 @@
 # 01 — Histórico dos quatro ciclos
 
-Este documento reconstrói o que cada equipe fez, extraído dos seis vídeos (pitch + relatório técnico por equipe) e do histórico git dos dois repositórios. A leitura deste arquivo é a primeira tarefa da Sprint 0.
+Este documento reconstrói o que cada equipe fez, extraído dos seis vídeos (pitch + relatório técnico das Equipes 3, 4 e 6), do histórico git de três repositórios e da documentação em PDF do Grupo 2 (anexo C). A leitura deste arquivo é a primeira tarefa da Sprint 0.
 
 ## Linha do tempo
 
@@ -21,10 +21,11 @@ timeline
            : Diarização Vosk + Google SR
            : Log de transcrições, rota de recomendações
            : Docker, testes, novo layout
-    2026.1 : Trilha privada (Dr. Rui) — ext v2.2/2.3
-           : Supabase + Vercel + Groq Whisper
-           : SOAP, receitas, atestados, 9 PEPs
-           : Hoje offline
+    2026.1 : Grupo 2 — v4.0
+           : Login por perfil, aprovação de médicos
+           : Web app React (pacientes, admin)
+           : Rota extension/extracted-data, api.ts na extensão
+           : Em paralelo, trilha privada do Dr. Rui (ext v2.2/2.3, hoje offline)
     2026.2 : Nova equipe (este projeto) — v5.0
            : Da conversa ao prontuário
 ```
@@ -113,6 +114,29 @@ timeline
 
 ---
 
+## Ciclo 4 — Grupo 2 (2026.1) — v4.0 "Sistema gerenciador"
+
+**Fontes:** repositório `qleticia/copilot_medico_grupo_2_es` (fork da base da Equipe 6; 24 commits entre 05/07 e 14/07/2026), `docs/anexos/C-documentacao-grupo-2-2026-1.pdf` (documentação entregue à disciplina, 12 páginas) e o README reescrito pelo grupo. Não foram localizados vídeos. Este ciclo **não constava** na versão de 15/09 deste documento; foi incorporado em 20/09/2026, quando o fork e a documentação chegaram ao PO.
+
+**Equipe (7):** Aline Ferreira Barbosa, Italo Rangel, Aimê Carvalho Guimarães, Camila de Sá Vaz, Eryck Emmanuels, Lays Leticia, Leticia Rodrigues. No git: Leticia Rodrigues Quirino (backend de autenticação, rota da extensão, textos), Camila de Sá Vaz (endpoint `extension/extracted-data`), Eryck Emmanuels (base do web app), Aimê Guimarães (tela de pacientes com dados da extensão), Lays Leticia (envio da extensão ao backend), Italo Baracho (merges e README). Aline não aparece como autora de commits.
+
+**Tese do ciclo (PDF, seção 1):** um **Sistema Gerenciador Web** passa a ser o núcleo da solução — login, pacientes, consultas, prontuário, exames, dashboard — e a extensão vira "módulo de apoio operacional durante a consulta". O fluxo descrito tem cinco etapas: início da consulta no gerenciador (cria `session_id` + `patient_id`) → extensão grava/chat/exames → envio ao backend Flask → anonimização → recuperação do contexto clínico.
+
+**O que foi construído (delta real sobre a v3.0: 37 arquivos, +4.570/−362 linhas):**
+- **Autenticação no backend** (`API/backend/auth_service.py`, 521 linhas; `auth_decorators.py`): usuários em `users_db.json` com senha em scrypt (Werkzeug); quatro perfis declarados (`administrador`, `medico`, `recepcao`, `usuario`), dois utilizáveis; JWT HS256 com 60 min; **fluxo de aprovação de médicos** (`register-doctor` → `pending` → admin aprova/rejeita). Todas as 10 rotas antigas passaram a exigir token e perfil; posse de paciente por `doctor_id`.
+- **Rota `POST /api/extension/extracted-data`** (+ alias `/api/extracted-data`): recebe `patient_id`, `consultation_id`, `source_url` e o conteúdo raspado pela extensão; grava em `extension_data`; se houver consulta, envia ao Gemini. Fecha em parte a regressão D‑01.
+- **Web app React/Vite** (`front/copmed-web`, JavaScript): Login com abas Entrar/Cadastrar médico, Dashboard, Pacientes (lista, cadastro, consultas, dados da extensão, áudios/transcrições), Admin de médicos (aprovar/rejeitar). Cinco de oito telas (Agenda, Consulta, Atendimentos, Histórico, Ajustes) são placeholders.
+- **Extensão:** `src/services/api.ts` centraliza todas as chamadas (fim dos `fetch` espalhados e da URL fixa em `App.tsx`); tela de login na própria extensão; token em `chrome.storage.local`; `background.js` reescrito para enviar os dados extraídos com token.
+- **Testes:** +283 linhas (3 casos em `test_patient_db.py`, 9 em `test_server_api.py`). **README** reescrito; `front/copmed-web/README.md` com "limitações conhecidas" honestas.
+
+**Requisitos declarados como implementados (PDF, seção 5):** US01 login · US02 cadastrar paciente · US03 consultar pacientes · US04 iniciar consulta · US05 encerrar consulta · US06 visualizar prontuário · US07 recuperar histórico clínico · US08 armazenar informações clínicas · US09 consultar assistente · US10 gerar informações estruturadas · US11 upload de exames · US12 extrair informações de exames. (Numeração própria do grupo; não coincide com US001–US010 da Equipe 4 nem com US011–US024 deste plano.)
+
+**O que ficou para os próximos (detalhado no doc 02, seção 0):** instalação padrão inacessível (sem `AUTH_BOOTSTRAP_*` não existe admin; sem `AUTH_SECRET_KEY` toda rota devolve 500); médico logado não vê os pacientes legados (`doctor_id` nulo); PyJWT fora do `requirements.txt` (roda um HS256 caseiro); 16 testes quebram por 401; CI não builda a web nem roda pytest; `App.tsx` cresceu para 1.972 linhas; conteúdo bruto da extensão gravado sem anonimização; nenhuma das 8 variáveis novas documentada; diarização, prompt, banco JSON, seed "João Silva" e modelos Vosk no git seguem como na v3.0.
+
+**Lição do ciclo:** a equipe ampliou a superfície do produto (web app) e resolveu o problema de segurança mais grave da v3.0 (API sem autenticação), mas sem integrar a documentação (`Requisitos.md` intocado, requisitos em PDF à parte), sem CI e sem fechar o próprio fluxo de instalação. A v5.0 parte desta base — não da v3.0.
+
+---
+
 ## Trilha paralela — extensão privada v2.2/v2.3 (abril/2026)
 
 Não faz parte do histórico acadêmico, mas é a referência mais completa do que o cliente quer. Extensão em JavaScript puro (6.567 linhas em 6 arquivos, "Sprint S11"):
@@ -129,8 +153,8 @@ O que a v5.0 **absorve** dessa trilha: o conceito de SOAP estruturado com CID‑
 
 ## Padrões que atravessam os quatro ciclos
 
-1. **Cada equipe recomeça a documentação.** O único documento de requisitos é da Equipe 4; a Equipe 6 não o atualizou. A v5.0 deve manter `docs/` vivo dentro do repositório.
+1. **Cada equipe recomeça a documentação.** O único documento de requisitos versionado é da Equipe 4; a Equipe 6 não o atualizou e o Grupo 2 entregou os seus em um PDF à parte (anexo C), deixando `Requisitos.md` intocado. A v5.0 deve manter `docs/` vivo dentro do repositório.
 2. **Nada é medido.** Nenhum ciclo mediu qualidade da transcrição ou das hipóteses. A v5.0 introduz um conjunto de casos de referência.
-3. **Testes chegam no fim e não rodam no CI.** A Equipe 6 escreveu 532 linhas de testes, mas o workflow só builda o front.
-4. **O médico valida tudo** — dito nos três pitches. A v5.0 transforma isso em regra de produto: nenhuma saída da IA entra no prontuário sem o médico editar/aprovar.
-5. **Privacidade é prometida, parcialmente entregue.** "Roda localmente e remove o nome" é verdade só para nomes de pessoa; CPF, telefone, endereço e datas passam.
+3. **Testes chegam no fim e não rodam no CI.** A Equipe 6 escreveu 532 linhas de testes, mas o workflow só builda o front. O Grupo 2 acrescentou 283 linhas, mas 16 testes quebram por falta de token e o workflow continua o mesmo.
+4. **O médico valida tudo** — dito em todos os pitches gravados. A v5.0 transforma isso em regra de produto: nenhuma saída da IA entra no prontuário sem o médico editar/aprovar.
+5. **Privacidade é prometida, parcialmente entregue.** "Roda localmente e remove o nome" é verdade só para nomes de pessoa; CPF, telefone, endereço e datas passam. Na v4.0, o conteúdo bruto da extensão é gravado sem passar nem pelo filtro de nomes.

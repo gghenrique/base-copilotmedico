@@ -99,3 +99,19 @@ Frontend (extensão): Usuário → UI; Content → Background → **API REST** d
 | `sidebar.css` | 1.120 | Estilos da sidebar |
 
 Estado em 15/09/2026: `https://copilot-medico.vercel.app/api/health` → `HTTP 402 Payment required — DEPLOYMENT_DISABLED`.
+
+## 5. Repositório do Grupo 2 (2026.1) — adicionado em 20/09/2026
+
+`https://github.com/qleticia/copilot_medico_grupo_2_es` (fork público da base da Equipe 6, branch `main`).
+
+| | Valor |
+|---|---|
+| Commits do grupo | 24 (05/07 → 14/07/2026), 8 identidades git, 6 pessoas com commits |
+| Delta sobre a v3.0 | 37 arquivos, +4.570 / −362 linhas |
+| Backend Python | `server.py` 581 → 1.070 linhas; `auth_service.py` 521; `patient_db.py` +177 |
+| Web app | `front/copmed-web` — React 18 + Vite 5, JavaScript, ~1.900 linhas, sem testes |
+| Extensão | `App.tsx` 1.752 → 1.972; `services/api.ts` 168; `background.js` reescrito |
+| Testes Python | +283 linhas (12 casos novos); 16 casos da suíte quebram por 401 |
+| CI | idêntico à v3.0 (só builda a extensão) |
+| Segredos na história | `api-key.txt` (herdado da Equipe 4) — por isso só a **árvore final** foi integrada em `ruypontes/copilot-medico`, com co‑autoria dos 7 committers, e não o histórico |
+| Docs | README reescrito; `front/copmed-web/README.md`; PDF de 12 páginas (anexo C); `Requisitos.md` intocado |
