@@ -35,6 +35,7 @@ API/backend/patients_db.json
 .idea/
 .DS_Store
 Thumbs.db
+*.jar
 
 # Entregáveis gerados (docx/pdf) — fonte é o markdown em docs/
 entregaveis/
