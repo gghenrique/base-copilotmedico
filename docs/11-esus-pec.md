@@ -252,8 +252,6 @@ na tabela `tb_config_sistema` (`co_config_sistema = 'TREINAMENTO'`).
 - serviço `esus-db` no nosso `docker-compose.yml`, com volume nomeado
 - instalar no build (imagem pronta, mas precisa do banco disponível no build)
   ou na primeira subida (imagem genérica, mas a primeira subida demora)
-- impacto no tamanho da imagem: sem o Postgres embutido e os dados, deve
-  cair para menos de 1 GB
 
 ### 2. Backup do banco
 
