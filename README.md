@@ -48,7 +48,11 @@ O produto **funciona como demo**, mas não como ferramenta de uso diário: banco
 
 Instruções herdadas e corrigidas. A Sprint 1 substitui isto por `docker compose up` (item B12).
 
-**Backend** (Python 3.11 ou 3.12 — o módulo `audioop` usado pela diarização não existe no 3.13):
+Backend — Python 3.11 ou 3.12 (obrigatório): esta versão do projeto suporta somente Python 3.11 e 3.12, devido à dependência de áudio utilizada pela diarização. Python 3.13 ou superior não é suportado.
+
+python --version
+
+A versão deve ser Python 3.11.x ou Python 3.12.x.
 
 ```bash
 cd API
@@ -98,6 +102,29 @@ Abre em `http://localhost:5174`. Entre com o e‑mail/senha do bootstrap e perfi
 
 **Conhecido e quebrado nesta versão:** a extração do Amplimed usa dois conjuntos de seletores divergentes (D‑01); a diarização está em modo de teste (D‑03); médicos não veem os pacientes legados (D‑24); 16 testes quebram por 401 (D‑17). Todos são itens das Sprints 0–1.
 
+## Validação do README
+
+Este README deve ser validado por uma pessoa que não participou da sua escrita, seguindo as instruções de instalação e execução desde o início.
+
+### Checklist de validação
+
+- [ ] Confirmar que Python 3.11 ou 3.12 está sendo utilizado.
+- [ ] Confirmar que Python 3.13 ou superior está identificado como não suportado.
+- [ ] Instalar as dependências do backend.
+- [ ] Confirmar a configuração do arquivo `.env`.
+- [ ] Iniciar o backend sem erros.
+- [ ] Instalar e executar o sistema gerenciador web.
+- [ ] Confirmar acesso a `http://localhost:5174`.
+- [ ] Confirmar que as instruções do README são suficientes sem orientação do autor.
+
+### Registro da validação
+
+- **Validador:** ______________________________
+- **Data:** ____/____/________
+- **Versão do Python utilizada:** ______________
+- **Resultado:** [ ] Aprovado  [ ] Aprovado com ajustes  [ ] Reprovado
+- **Observações:** ______________________________________________
+
 ## Fontes analisadas
 
 **Vídeos (canal REACT Labs | UPE – POLI):**
@@ -121,6 +148,12 @@ Abre em `http://localhost:5174`. Entre com o e‑mail/senha do bootstrap e perfi
 Listadas em [docs/10-riscos-decisoes.md](docs/10-riscos-decisoes.md#decisões-pendentes-do-cliente).
 
 **Já decididas (15/09/2026):** transcrição por **Gemini áudio**; segundo prontuário **e‑SUS PEC**; repositório único em `ruypontes/copilot-medico`.
+
+```bash
+cd API
+pip install -r requirements.txt
+python -m spacy download pt_core_news_lg
+```
 
 **Ainda pendentes:**
 1. Quem paga a chave Gemini durante o semestre e qual o limite mensal (P2).
