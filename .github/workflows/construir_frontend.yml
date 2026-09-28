@@ -1,50 +1,88 @@
-name: Construir Frontend (Extensão)
+name: CI Frontend
+
+# B11 (US012): lint, checagem de tipos e build da extensão e do sistema web.
+# Os jobs abaixo são os checks exigidos pela proteção de develop e main
+# (ver docs/07-equipe-processo.md, seção "Proteção de branches").
 
 on:
   push:
     branches:
       - main
-      - branch_de_desenvolvimento 
-      - ambiente-de-testes-implementacao
-
+      - develop
+    paths:
+      - "front/**"
+      - ".github/workflows/construir_frontend.yml"
   pull_request:
     branches:
-      - branch_de_desenvolvimento
       - main
-      - ambiente-de-testes-implementacao
+      - develop
+
+concurrency:
+  group: ci-frontend-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build-frontend-extension:
-    name: "Construir Pasta 'dist' da Extensão Frontend"
+  extensao:
+    name: "Extensão (eslint, tsc, vite build)"
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./front/copmed-extension
-
     steps:
-      - name: "1. Baixar o código do repositório"
+      - name: Baixar o código do repositório
         uses: actions/checkout@v4
 
-      - name: "2. Configurar ambiente Node.js"
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: front/copmed-extension/package-lock.json
 
-      - name: "3. Instalar dependências do Frontend"
+      - name: Instalar dependências
         run: npm ci
 
-      - name: "4. Construir o Frontend (gerar pasta 'dist')"
-        run: npm run build
+      - name: Lint (eslint)
+        run: npm run lint -- --max-warnings=0
 
-      - name: "5. Compactar a pasta 'dist' do Frontend"
+      - name: Checagem de tipos (tsc)
+        run: npx tsc -b
+
+      - name: Build (vite)
+        run: npx vite build
+
+      - name: Compactar a pasta dist
         run: zip -r extension-dist.zip ./dist
 
-      - name: "6. Fazer upload da pasta 'dist' compactada como Artefato"
+      - name: Publicar a extensão como artefato
         uses: actions/upload-artifact@v4
         with:
           name: extension-dist-package
           path: ./front/copmed-extension/extension-dist.zip
           retention-days: 7
+
+  web:
+    name: "Web copmed-web (eslint, vite build)"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front/copmed-web
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: front/copmed-web/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Lint (eslint)
+        run: npm run lint -- --max-warnings=0
+
+      - name: Build (vite)
+        run: npm run build
