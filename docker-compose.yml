@@ -1,21 +1,76 @@
-version: "3.8"
+# CoPilot Medico - ambiente de desenvolvimento completo (B12)
+#
+#   cp API/.env.example API/.env   # preencha GEMINI_API_KEY e AUTH_*
+#   docker compose up -d --build
+#
+# Servicos expostos no host:
+#   - copmed-web (sistema gerenciador) .. http://localhost:8080
+#   - backend (API Flask) .............. http://localhost:3001
+#   - db (PostgreSQL) .................. localhost:5432
+#
+# A extensao Chrome NAO e servida aqui: ela depende das APIs chrome.* e
+# precisa ser carregada sem compactacao em chrome://extensions a partir de
+# front/copmed-extension/dist. Servi-la como pagina web trava a UI em
+# "Validando sessao...", por isso o antigo servico `frontend` foi removido.
+
 services:
+  db:
+    image: postgres:16-alpine
+    env_file:
+      - ./API/.env
+    environment:
+      # Defaults batem com o DB_URL do .env.example; o env_file sobrescreve.
+      POSTGRES_USER: ${POSTGRES_USER:-copmed}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-copmed}
+      POSTGRES_DB: ${POSTGRES_DB:-copmed}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # pg_isready evita que o backend suba antes do banco aceitar conexoes.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-copmed} -d ${POSTGRES_DB:-copmed}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
   backend:
     build:
       context: ./API
       dockerfile: Dockerfile
     env_file:
-      - ./.env
+      - ./API/.env
     environment:
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      # Aponta os bancos JSON para o volume, senao os dados se perdem a cada
+      # `docker compose build`. Some quando a migracao para Postgres ocorrer.
+      PATIENTS_DB_FILE: /app/data/patients_db.json
+      AUTH_USERS_DB_FILE: /app/data/users_db.json
     ports:
       - "3001:3001"
+    volumes:
+      - backend_data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
-  frontend:
+  copmed-web:
     build:
-      context: ./front/copmed-extension
+      context: ./front/copmed-web
       dockerfile: Dockerfile
+      args:
+        # Embutido no bundle em tempo de build: o navegador do usuario acessa
+        # a API pelo host, nao pela rede interna do compose.
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
     ports:
       - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
     restart: unless-stopped
+
+volumes:
+  postgres_data:
+  backend_data:
