@@ -420,3 +420,42 @@ def get_patient_transcription_log(patient_id):
         return patient_data["transcription_log"]
 
     return []
+
+
+# ID do paciente de demonstração que o servidor antigo recriava a cada restart (bug D-24).
+LEGACY_SEED_PATIENT_ID = "paciente_abc"
+
+
+def migrate_legacy_patients(target_doctor_id, dry_run=False):
+    """
+    Migração do D-24 (decisão P11): pacientes legados sem doctor_id ficavam
+    invisíveis para qualquer médico.
+
+    - Apaga o paciente de demonstração (LEGACY_SEED_PATIENT_ID, "João Silva").
+    - Atribui target_doctor_id a todos os demais pacientes sem doctor_id.
+    - Com dry_run=True apenas calcula o resultado, sem gravar no arquivo.
+
+    É idempotente: rodar de novo não altera nada.
+    Retorna {"removed": [ids apagados], "assigned": [ids atribuídos]}.
+    """
+    if not target_doctor_id:
+        raise ValueError("target_doctor_id é obrigatório para migrar pacientes legados.")
+
+    db = load_database()
+    removed = []
+    assigned = []
+
+    if LEGACY_SEED_PATIENT_ID in db:
+        del db[LEGACY_SEED_PATIENT_ID]
+        removed.append(LEGACY_SEED_PATIENT_ID)
+
+    for patient_id, patient_data in db.items():
+        if not patient_data.get("doctor_id"):
+            patient_data["doctor_id"] = target_doctor_id
+            assigned.append(patient_id)
+
+    # Só grava se houve mudança real (e nunca em simulação).
+    if not dry_run and (removed or assigned):
+        save_database(db)
+
+    return {"removed": removed, "assigned": assigned}
