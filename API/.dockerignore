@@ -5,3 +5,12 @@ __pycache__
 .env
 dist
 node_modules
+tests
+.pytest_cache
+
+# Modelos Vosk: baixados dentro da imagem por scripts/download_models.py.
+# Mante-los fora do contexto evita enviar ~67 MB ao daemon a cada build.
+backend/vosk-model-*/
+
+# Banco local do desenvolvedor nao deve vazar para a imagem.
+backend/patients_db.json

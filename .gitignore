@@ -22,6 +22,9 @@ front/copmed-extension/dist/
 front/copmed-extension/*.tsbuildinfo
 extension-dist.zip
 
+# Modelos Vosk — baixados por `python API/scripts/download_models.py` (B13)
+API/backend/vosk-model-*/
+
 # Banco local e áudio temporário
 API/backend/patients_db.json
 *.db
