@@ -48,6 +48,16 @@ Equipes anteriores tiveram entre 6 e 9 contribuidores ativos; o plano assume 6�
 - Merge: squash em `develop`; `main` recebe merge da `develop` só na release, com tag `vX.Y.Z`.
 - Versionamento: `5.0.0-alpha.N` durante o semestre; `5.0.0` em M4.
 
+### Proteção de branches (B11)
+
+O workflow `.github/workflows/construir_frontend.yml` roda em todo PR para `develop` e `main` e tem dois jobs: **Extensão (eslint, tsc, vite build)** e **Web copmed-web (eslint, vite build)**. Para que um PR com CI vermelho não possa ser mergeado, um administrador do repositório configura em *Settings → Branches* (ou *Rules → Rulesets*) uma regra para `develop` e outra para `main` com:
+
+- *Require a pull request before merging*, com 1 aprovação.
+- *Require status checks to pass before merging*, marcando os dois jobs acima (e os jobs do CI backend quando o B10 entrar) e *Require branches to be up to date*.
+- *Do not allow bypassing the above settings* e bloqueio de *force push* e de exclusão da branch.
+
+A regra só aparece na lista de checks depois que o workflow rodou pelo menos uma vez no repositório.
+
 ## Definição de pronto
 
 Ver doc 06. Resumo: PR revisado, CI verde, teste do critério de aceite, sem PII, docs quando muda contrato, demonstrado na review.
