@@ -16,20 +16,22 @@
 services:
   db:
     image: postgres:16-alpine
+    # As credenciais vem exclusivamente de API/.env (POSTGRES_USER,
+    # POSTGRES_PASSWORD, POSTGRES_DB). Nao ha bloco `environment:` aqui de
+    # proposito: ele teria precedencia sobre o env_file e anularia o valor
+    # configurado pelo usuario. Nenhuma senha default no versionamento.
     env_file:
       - ./API/.env
-    environment:
-      # Defaults batem com o DB_URL do .env.example; o env_file sobrescreve.
-      POSTGRES_USER: ${POSTGRES_USER:-copmed}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-copmed}
-      POSTGRES_DB: ${POSTGRES_DB:-copmed}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      # pg_isready evita que o backend suba antes do banco aceitar conexoes.
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-copmed} -d ${POSTGRES_DB:-copmed}"]
+      # `$$` escapa a interpolacao do Compose: a expansao acontece no shell
+      # DENTRO do container, lendo as variaveis vindas do env_file. Com um `$`
+      # simples, o Compose resolveria no parse contra o .env da raiz - que nao
+      # tem essas chaves - e o healthcheck usaria o usuario errado.
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER:-postgres}\" -d \"$${POSTGRES_DB:-postgres}\""]
       interval: 10s
       timeout: 5s
       retries: 5
