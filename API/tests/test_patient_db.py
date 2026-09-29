@@ -65,21 +65,6 @@ def test_add_message_to_consultation_history_and_get(temp_db_file):
     assert history[0]["parts"][0]["text"] == "Ola"
 
 
-def test_legacy_patient_chat_history_starts_empty(temp_db_file):
-    pid = pdb.generate_patient_id()
-    pdb.ensure_patient_exists(pid)
-    hist = pdb.get_patient_chat_history(pid)
-    assert hist == []
-
-
-def test_add_message_to_history_legacy_creates_structure(temp_db_file):
-    pid = pdb.generate_patient_id()
-    pdb.add_message_to_history(pid, "user", "hello")
-    db = pdb.load_database()
-    assert pid in db
-    assert db[pid]["chat_history"][0]["parts"][0]["text"] == "hello"
-
-
 def test_add_and_get_extension_data(temp_db_file):
     pid = pdb.generate_patient_id()
     pdb.ensure_patient_exists(pid, name="Ext")

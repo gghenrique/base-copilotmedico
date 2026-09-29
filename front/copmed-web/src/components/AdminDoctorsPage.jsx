@@ -20,6 +20,9 @@ function AdminDoctorsPage({ token }) {
   const [requests, setRequests] = useState([]);
   const [state, setState] = useState({ loading: false, error: '' });
   const [actionLoadingId, setActionLoadingId] = useState('');
+  const [actionError, setActionError] = useState('');
+  const [rejectingId, setRejectingId] = useState('');
+  const [rejectReason, setRejectReason] = useState('');
 
   const loadRequests = useCallback(async () => {
     setState({ loading: true, error: '' });
@@ -38,25 +41,38 @@ function AdminDoctorsPage({ token }) {
   }, [loadRequests]);
 
   async function handleApprove(userId) {
+    setActionError('');
     setActionLoadingId(userId);
     try {
       await approveDoctor(token, userId);
       await loadRequests();
     } catch (error) {
-      window.alert(error.message || 'Não foi possível aprovar o médico.');
+      setActionError(error.message || 'Não foi possível aprovar o médico.');
     } finally {
       setActionLoadingId('');
     }
   }
 
-  async function handleReject(userId) {
-    const reason = window.prompt('Motivo da rejeição (opcional)') || '';
+  function startReject(userId) {
+    setActionError('');
+    setRejectReason('');
+    setRejectingId(userId);
+  }
+
+  function cancelReject() {
+    setRejectingId('');
+    setRejectReason('');
+  }
+
+  async function confirmReject(userId) {
+    setActionError('');
     setActionLoadingId(userId);
     try {
-      await rejectDoctor(token, userId, reason);
+      await rejectDoctor(token, userId, rejectReason.trim());
+      cancelReject();
       await loadRequests();
     } catch (error) {
-      window.alert(error.message || 'Não foi possível rejeitar o médico.');
+      setActionError(error.message || 'Não foi possível rejeitar o médico.');
     } finally {
       setActionLoadingId('');
     }
@@ -89,6 +105,7 @@ function AdminDoctorsPage({ token }) {
         </div>
 
         {state.error && <div className="alert alert-error">{state.error}</div>}
+        {actionError && <div className="alert alert-error" role="alert">{actionError}</div>}
 
         {state.loading ? (
           <div className="empty-state">
@@ -128,7 +145,30 @@ function AdminDoctorsPage({ token }) {
                       </span>
                     </td>
                     <td>
-                      {doctor.approval_status === 'pending' ? (
+                      {doctor.approval_status === 'pending' && rejectingId === doctor.id ? (
+                        <form
+                          className="reject-form"
+                          onSubmit={(event) => {
+                            event.preventDefault();
+                            confirmReject(doctor.id);
+                          }}
+                        >
+                          <input
+                            value={rejectReason}
+                            onChange={(event) => setRejectReason(event.target.value)}
+                            placeholder="Motivo da rejeição (opcional)"
+                            aria-label="Motivo da rejeição (opcional)"
+                            maxLength={300}
+                            autoFocus
+                          />
+                          <button className="primary-button compact" type="submit" disabled={actionLoadingId === doctor.id}>
+                            Confirmar
+                          </button>
+                          <button className="text-button" type="button" onClick={cancelReject} disabled={actionLoadingId === doctor.id}>
+                            Cancelar
+                          </button>
+                        </form>
+                      ) : doctor.approval_status === 'pending' ? (
                         <div className="row-actions">
                           <button
                             className="icon-button approve"
@@ -142,7 +182,7 @@ function AdminDoctorsPage({ token }) {
                           <button
                             className="icon-button reject"
                             type="button"
-                            onClick={() => handleReject(doctor.id)}
+                            onClick={() => startReject(doctor.id)}
                             title="Rejeitar médico"
                             disabled={actionLoadingId === doctor.id}
                           >

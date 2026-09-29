@@ -7,6 +7,7 @@ function PatientsPage({ token, patients, loading, error, onRefresh, onCreatePati
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [newPatientName, setNewPatientName] = useState('');
   const [saving, setSaving] = useState(false);
+  const [createError, setCreateError] = useState('');
   const [consultations, setConsultations] = useState([]);
   const [consultationsState, setConsultationsState] = useState({ loading: false, error: '' });
   const [extensionItems, setExtensionItems] = useState([]);
@@ -98,12 +99,13 @@ function PatientsPage({ token, patients, loading, error, onRefresh, onCreatePati
     const name = newPatientName.trim();
     if (!name) return;
 
+    setCreateError('');
     setSaving(true);
     try {
       await onCreatePatient({ name });
       setNewPatientName('');
     } catch (err) {
-      window.alert(err.message || 'Erro ao cadastrar paciente.');
+      setCreateError(err.message || 'Erro ao cadastrar paciente.');
     } finally {
       setSaving(false);
     }
@@ -139,6 +141,8 @@ function PatientsPage({ token, patients, loading, error, onRefresh, onCreatePati
             {saving ? 'Salvando...' : 'Cadastrar'}
           </button>
         </form>
+
+        {createError && <div className="alert alert-error" role="alert">{createError}</div>}
 
         <div className="input-icon search-box">
           <Search size={18} />
