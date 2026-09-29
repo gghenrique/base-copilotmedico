@@ -3,8 +3,11 @@ import os
 import uuid
 from datetime import datetime
 
-# Define o caminho para o arquivo do banco de dados, garantindo que seja relativo ao diretório atual do script.
-DB_FILE = os.path.join(os.path.dirname(__file__), 'patients_db.json')
+from .config import settings
+
+# Lido de PATIENTS_DB_FILE (ver .env.example); o default mantem o caminho
+# historico backend/patients_db.json para quem roda fora do Docker.
+DB_FILE = settings.patients_db_file
 
 def _now_iso():
     return datetime.now().isoformat()
@@ -74,6 +77,11 @@ def save_database(db_data):
     Salva o banco de dados JSON no arquivo.
     """
     try:
+        # Garante o diretorio: com PATIENTS_DB_FILE apontando para um volume
+        # (ex.: /app/data/patients_db.json), a pasta pode nao existir ainda.
+        directory = os.path.dirname(DB_FILE)
+        if directory:
+            os.makedirs(directory, exist_ok=True)
         with open(DB_FILE, 'w', encoding='utf-8') as f:
             json.dump(db_data, f, ensure_ascii=False, indent=2)
     except IOError:
