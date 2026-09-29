@@ -151,20 +151,34 @@ def test_extension_extracted_data_saves_user_and_ai_messages(client, auth_header
     assert extension_items[0]["type"] == "extracted_data"
 
 
-def test_extension_extracted_data_accepts_camel_case_without_consultation(client, auth_headers):
+def test_extension_extracted_data_requires_consultation(client, auth_headers):
+    """B07: vinculo com a consulta e obrigatorio (antes era opcional)."""
     pid = pdb.generate_patient_id()
     pdb.ensure_patient_exists(pid, name="Teste")
 
     resp = client.post(
         '/api/extension/extracted-data',
+        json={"patient_id": pid, "extracted_data": {"peso": "70"}},
+        headers=auth_headers("administrador"),
+    )
+
+    assert resp.status_code == 400
+    assert "consultation_id" in resp.get_json()["message"]
+
+
+def test_extension_extracted_data_accepts_camel_case_with_consultation(client, auth_headers):
+    pid = pdb.generate_patient_id()
+    pdb.ensure_patient_exists(pid, name="Teste")
+    cid = pdb.add_consultation_to_patient(pid, "Consulta X")
+
+    resp = client.post(
+        '/api/extension/extracted-data',
         json={
             "patientId": pid,
+            "consultationId": cid,
             "sourceUrl": "https://sistema-prontuario.com/atendimento",
             "createdAt": "2026-07-07T12:00:00",
-            "extractedData": {
-                "peso": "70",
-                "queixa": ["dor", "febre"],
-            },
+            "extractedData": {"peso": "70", "queixa": ["dor", "febre"]},
         },
         headers=auth_headers("administrador"),
     )
@@ -173,8 +187,7 @@ def test_extension_extracted_data_accepts_camel_case_without_consultation(client
     assert resp.status_code == 200
     assert payload["status"] == "success"
     assert payload["patient_id"] == pid
-    assert payload["consultation_id"] is None
-    assert payload["ai_response"] is None
+    assert payload["consultation_id"] == cid
     assert payload["extension_data"]["source"] == "extension"
     assert payload["extension_data"]["created_at"] == "2026-07-07T12:00:00"
     assert payload["extension_data"]["content"]["peso"] == "70"
@@ -204,11 +217,13 @@ def test_extension_extracted_data_rejects_consultation_from_other_patient(client
 def test_legacy_extracted_data_alias_saves_structured_data(client, auth_headers):
     pid = pdb.generate_patient_id()
     pdb.ensure_patient_exists(pid, name="Teste")
+    cid = pdb.add_consultation_to_patient(pid, "Consulta X")
 
     resp = client.post(
         '/api/extracted-data',
         json={
             "patient_id": pid,
+            "consultation_id": cid,
             "extracted_data": {"pressao": "120/80"},
         },
         headers=auth_headers("administrador"),

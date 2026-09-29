@@ -231,6 +231,20 @@ def consultation_belongs_to_patient(patient_id: str, consultation_id: str) -> bo
         for consultation in patient_data.get("consultations", [])
     )
 
+def find_patient_id_by_consultation(consultation_id: str):
+    """
+    Devolve o id do paciente dono da consulta, ou None se ela nao existir.
+    (O banco JSON e indexado por paciente; a B19 troca isto por uma consulta SQL.)
+    """
+    if not isinstance(consultation_id, str) or not consultation_id:
+        return None
+
+    for patient_id, patient_data in load_database().items():
+        for consultation in patient_data.get("consultations", []):
+            if consultation.get("id") == consultation_id:
+                return patient_id
+    return None
+
 def add_message_to_consultation_history(patient_id: str, consultation_id: str, role: str, text: str):
     """
     Adiciona uma nova mensagem (do usuário ou do modelo) ao histórico de chat
@@ -268,9 +282,15 @@ def add_extension_data_to_patient(
     consultation_id: str = None,
     source_url: str = None,
     created_at: str = None,
+    entry_type: str = "extracted_data",
+    extra: dict = None,
 ):
     """
     Salva dados estruturados capturados pela extensao dentro do registro do paciente.
+
+    `entry_type` diferencia o formato livre legado ("extracted_data") do contrato
+    tipado ("pep_import"); `extra` acrescenta campos de primeiro nivel ao item
+    (ex.: pep_origem) sem poder sobrescrever os campos reservados.
     """
     db = load_database()
     patient_data = db.get(patient_id)
@@ -289,11 +309,13 @@ def add_extension_data_to_patient(
         "consultation_id": consultation_id,
         "source": "extension",
         "source_url": source_url,
-        "type": "extracted_data",
+        "type": entry_type,
         "content": content,
         "created_at": entry_created_at,
         "timestamp": entry_created_at,
     }
+    for key, value in (extra or {}).items():
+        entry.setdefault(key, value)
 
     patient_data["extension_data"].insert(0, entry)
     save_database(db)

@@ -146,7 +146,7 @@ erDiagram
 | GET/POST | `/api/patients` | — / {sexo, ano_nascimento, identificacao?} | lista / paciente (pseudônimo) |
 | POST | `/api/patients/<id>/consultations` | titulo?, origem_pep?, importar_de?[] | consulta |
 | POST | `/api/consultations/<id>/consent` | tipo, versao_texto | 201 |
-| POST | `/api/consultations/<id>/pep-import` | {campos: {peso, …, anamnese, …}} | resumo do que foi registrado |
+| POST | `/api/consultations/<id>/pep-import` | {pep_origem, source_url?, created_at?, campos: {peso, …, anamnese, …}} | resumo do que foi registrado (nomes dos campos, nunca o conteúdo) |
 | POST | `/api/consultations/<id>/messages` | texto | resposta do LLM (reidratada) |
 | POST | `/api/consultations/<id>/pdf` | multipart pdf | resumo + resposta |
 | POST | `/api/consultations/<id>/audio/chunks` | multipart wav, seq | 202 |
@@ -255,3 +255,18 @@ Formato curto. Cada ADR ganha um arquivo em `docs/adr/` no repositório quando a
 - Chaves de API só em variáveis de ambiente; `/api/health` nunca expõe chaves (lição da trilha privada).
 - Áudio apagado após transcrição; logs sem conteúdo clínico.
 - Dependências travadas (`requirements.txt` com versões; `npm ci`).
+
+### Contrato `pep-import` (B07)
+
+Implementado em `API/backend/pep_import.py`; especificação OpenAPI 3.1 em `GET /api/openapi.json` (pública).
+
+- `pep_origem` (obrigatório): `amplimed`, `esus-pec` ou `outro`.
+- `campos`: 8 sinais vitais (`peso, altura, imc, tempe, freqres, freqcar, pas, pad`) e 4 notas
+  (`anamnese, exame_fisico, conclusao_diagnostica, lista_problemas`). Chave desconhecida → 400;
+  campo vazio é ignorado; ao menos um campo preenchido. Limites: 20 caracteres (sinal vital) e 20 000 (nota).
+- A consulta é obrigatória. Na rota canônica ela vem no caminho; o paciente é deduzido dela.
+- Aliases mantidos: `POST /api/extension/extracted-data` e `POST /api/extracted-data` (**deprecated**).
+  Ambos exigem `patient_id` + `consultation_id` no corpo e aceitam o corpo tipado ou o formato livre legado
+  (`extracted_content` / `extracted_data`).
+- O item gravado em `extension_data` tem `type: "pep_import"`, `pep_origem` e `content` plano.
+
