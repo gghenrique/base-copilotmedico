@@ -27,6 +27,8 @@ API/backend/vosk-model-*/
 
 # Banco local e áudio temporário
 API/backend/patients_db.json
+API/venv/
+API/.env
 *.db
 *.sqlite
 *.wav
