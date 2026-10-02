@@ -37,8 +37,34 @@ jobs:
         # o CI nao baixa os modelos Vosk nem compila dependencias nativas.
         run: pip install -r requirements-dev.txt
 
-      - name: "4. Rodar a suíte de testes"
-        run: pytest tests/ -v --cov=backend --cov=server --cov-report=term-missing
+      - name: "4. Lint (ruff)"
+        # Regras E9 + F (ver API/ruff.toml): erros de sintaxe, nomes
+        # indefinidos e imports nao usados.
+        run: ruff check .
+
+      - name: "5. Rodar a suíte de testes com cobertura"
+        run: pytest tests/ -v --cov=backend --cov=server --cov-report=term-missing --cov-report=xml --cov-report=html
+
+      - name: "6. Resumo da cobertura"
+        if: always()
+        run: |
+          if [ -f coverage.xml ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import xml.etree.ElementTree as ET
+          rate = float(ET.parse("coverage.xml").getroot().get("line-rate"))
+          print(f"### Cobertura do backend: {rate:.1%}")
+          PY
+          fi
+
+      - name: "7. Publicar relatório de cobertura"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura-backend
+          path: |
+            API/coverage.xml
+            API/htmlcov/
+          if-no-files-found: ignore
 
   verificar-script-de-modelos:
     name: "Verificar script de download dos modelos (B13)"

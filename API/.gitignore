@@ -36,3 +36,8 @@ instance/
 *.log
 # JSON files for local development
 *.json
+
+# Relatorios de cobertura (B10)
+coverage.xml
+htmlcov/
+.coverage

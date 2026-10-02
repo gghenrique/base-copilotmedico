@@ -9,3 +9,7 @@
 
 pytest==8.3.3
 pytest-cov==5.0.0
+
+# B10: lint e testes de contrato da API (OpenAPI x rotas Flask, B07)
+ruff==0.16.10
+jsonschema==4.26.0
