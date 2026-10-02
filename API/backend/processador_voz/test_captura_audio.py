@@ -41,7 +41,7 @@ class TestarCapturaAudio(unittest.TestCase):
         *** ATENÇÃO: TESTE MANUAL ***
         """
         print("\n--- INICIANDO TESTE: test_escutar_usuario_retorna_audio_data ---")
-        print(f"\n>>> POR FAVOR, FALE ALGO NO MICROFONE AGORA <<<")
+        print("\n>>> POR FAVOR, FALE ALGO NO MICROFONE AGORA <<<")
         print("(O teste começará a ouvir em 1 segundo...)")
         time.sleep(1)
 

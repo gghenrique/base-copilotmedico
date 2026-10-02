@@ -1,7 +1,4 @@
-import sys
 import os
-import json
-import uuid
 from datetime import datetime
 
 from flask import Flask, g, request, jsonify
@@ -37,7 +34,7 @@ from backend.config import settings
 
 # Importa TODAS as funções do seu patient_db.py
 from backend.patient_db import (
-    load_database, save_database, generate_patient_id, get_patient_data, 
+    generate_patient_id, get_patient_data, 
     get_all_patients_info, ensure_patient_exists, add_consultation_to_patient,
     get_patient_consultations, 
     get_consultation_chat_history, add_message_to_consultation_history, add_transcription_log_to_patient,
@@ -71,7 +68,7 @@ try:
     MODEL_PATH = os.path.join(BASE_DIR, "backend", "vosk-model-small-pt-0.3")
     SPK_MODEL_PATH = os.path.join(BASE_DIR, "backend", "vosk-model-spk-0.4")
 
-    print(f"[SERVER] Carregando Modelos de IA...")
+    print("[SERVER] Carregando Modelos de IA...")
 
     # Inicializa a classe Diarizador (Vosk + Google)
     if os.path.exists(MODEL_PATH) and os.path.exists(SPK_MODEL_PATH):
@@ -428,7 +425,7 @@ def transcribe_audio_route():
 
         if audio_processor:
             try:
-                print(f"[TRANSCRIÇÃO] Iniciando Diarização (Vosk + Google)...")
+                print("[TRANSCRIÇÃO] Iniciando Diarização (Vosk + Google)...")
                 # Aqui chamamos sua classe Diarizador
                 result = audio_processor.processar_audio(tmp_path)
 
@@ -448,7 +445,7 @@ def transcribe_audio_route():
 
         # 4. Fallback (Transcrição Simples) se o Diarizador falhar ou não existir
         if not processed_successfully:
-            print(f"[TRANSCRIÇÃO] Usando Transcritor Simples (Legacy)...")
+            print("[TRANSCRIÇÃO] Usando Transcritor Simples (Legacy)...")
             try:
                 transcritor = TranscritorVoz(idioma="pt-BR")
                 with sr.AudioFile(tmp_path) as source:

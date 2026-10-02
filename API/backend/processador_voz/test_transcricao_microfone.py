@@ -1,6 +1,5 @@
 import unittest
 import time
-import speech_recognition as sr
 
 # Importa as classes que queremos testar
 try:
@@ -45,7 +44,7 @@ class TestarTranscricaoMicrofone(unittest.TestCase):
         *** ATENÇÃO: TESTE MANUAL ***
         """
         print("\n--- INICIANDO TESTE: test_capturar_e_transcrever_fala ---")
-        print(f"\n>>> POR FAVOR, FALE UMA FRASE EM PORTUGUÊS <<<")
+        print("\n>>> POR FAVOR, FALE UMA FRASE EM PORTUGUÊS <<<")
         print("(O teste começará a ouvir em 1 segundo...)")
         time.sleep(1)
 

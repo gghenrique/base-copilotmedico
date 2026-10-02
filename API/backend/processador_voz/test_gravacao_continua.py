@@ -1,7 +1,4 @@
 
-import time
-import wave
-from io import BytesIO
 
 import speech_recognition as sr
 from pynput import keyboard

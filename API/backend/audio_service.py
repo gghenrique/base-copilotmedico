@@ -30,7 +30,7 @@ class Diarizador:
 
         SetLogLevel(-1)  # Logs limpos
 
-        print(f"[AUDIO_SERVICE] Carregando modelos IA (Logs ocultos)...")
+        print("[AUDIO_SERVICE] Carregando modelos IA (Logs ocultos)...")
         if MODO_TESTE_SOZINHO:
             print("⚠️ ATENÇÃO: MODO DE TESTE ATIVADO (ALTERNÂNCIA FORÇADA) ⚠️")
 

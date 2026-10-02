@@ -1,0 +1,10 @@
+# B10: lint do backend. Comeco enxuto para nao gerar um diff gigante no legado:
+# E9 (erros de sintaxe) + F (pyflakes: nomes indefinidos, imports nao usados).
+# Regras de estilo entram aos poucos, em PRs proprios.
+extend-exclude = [
+    "backend/vosk-model-small-pt-0.3",
+    "backend/vosk-model-spk-0.4",
+]
+
+[lint]
+select = ["E9", "F"]
