@@ -1,0 +1,81 @@
+name: Testes do Backend
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  pytest:
+    name: "pytest (API)"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./API
+
+    steps:
+      - name: "1. Baixar o código do repositório"
+        uses: actions/checkout@v4
+
+      - name: "2. Configurar Python 3.11"
+        # 3.11 espelha a imagem do Dockerfile. O modulo audioop, usado pela
+        # diarizacao, foi removido na 3.13.
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: API/requirements-dev.txt
+
+      - name: "3. Instalar dependências de teste"
+        # Apenas o subconjunto leve: o conftest stuba vosk/spaCy/numpy, entao
+        # o CI nao baixa os modelos Vosk nem compila dependencias nativas.
+        run: pip install -r requirements-dev.txt
+
+      - name: "4. Rodar a suíte de testes"
+        run: pytest tests/ -v --cov=backend --cov=server --cov-report=term-missing
+
+  verificar-script-de-modelos:
+    name: "Verificar script de download dos modelos (B13)"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./API
+
+    steps:
+      - name: "1. Baixar o código do repositório"
+        uses: actions/checkout@v4
+
+      - name: "2. Configurar Python 3.11"
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: "3. Garantir que os modelos NÃO estão versionados"
+        # O clone precisa ficar leve: se alguem recommitar os modelos, o job
+        # falha aqui em vez de a regressao passar despercebida.
+        run: |
+          if git ls-files | grep -q 'vosk-model'; then
+            echo "ERRO: arquivos de modelo Vosk voltaram para o versionamento."
+            git ls-files | grep 'vosk-model'
+            exit 1
+          fi
+          echo "OK: nenhum modelo Vosk versionado."
+
+      - name: "4. Validar o script de download"
+        # --check nao baixa nada (exit 1 por falta dos modelos e o esperado);
+        # o objetivo e garantir que o script continua executavel e sem erro
+        # de sintaxe/import.
+        run: |
+          python scripts/download_models.py --check && status=0 || status=$?
+          if [ "$status" -ne 1 ]; then
+            echo "ERRO: --check deveria sair com 1 quando faltam modelos (saiu $status)."
+            exit 1
+          fi
+          echo "OK: script de download responde corretamente."

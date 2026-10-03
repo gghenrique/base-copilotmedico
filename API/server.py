@@ -99,8 +99,11 @@ def current_user_is_doctor():
     return getattr(g, "current_profile", "") == "medico"
 
 
-def patient_belongs_to_current_user(patient_id):
-    patient_data = get_patient_data(patient_id)
+def patient_belongs_to_current_user(patient_id, patient_data=None):
+    # `patient_data` evita uma segunda leitura+parse do patients_db.json
+    # quando quem chama ja carregou o registro.
+    if patient_data is None:
+        patient_data = get_patient_data(patient_id)
     if not patient_data:
         return False
     if current_user_is_admin():
@@ -114,7 +117,7 @@ def require_patient_access(patient_id):
     patient_data = get_patient_data(patient_id)
     if not patient_data:
         return None, _json_error("Paciente nao encontrado.", 404)
-    if not patient_belongs_to_current_user(patient_id):
+    if not patient_belongs_to_current_user(patient_id, patient_data):
         return None, _json_error("Acesso negado ao paciente.", 403)
     return patient_data, None
 
@@ -236,6 +239,20 @@ def _anonymize_extracted_content(content):
     if isinstance(content, str):
         return text_filter.remover_nomes(content)
     return content
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """
+    Liveness/readiness sem autenticacao, consumido pelo HEALTHCHECK do Docker
+    e pelo `depends_on: service_healthy` do compose (B12).
+
+    Reporta tambem se a diarizacao subiu: os modelos Vosk sao baixados no build
+    (B13) e sua ausencia degrada o servico sem derrubar o processo.
+    """
+    return jsonify({
+        "status": "success",
+        "service": "copilot-medico-api",
+        "diarizer_loaded": audio_processor is not None,
+    }), 200
 
 
 @app.route('/api/auth/login', methods=['POST'])
@@ -540,7 +557,7 @@ def check_patient_exists_api(patient_id):
     try:
         patient_data = get_patient_data(patient_id) 
         exists = patient_data is not None
-        if exists and not patient_belongs_to_current_user(patient_id):
+        if exists and not patient_belongs_to_current_user(patient_id, patient_data):
             return _json_error("Acesso negado ao paciente.", 403)
         return jsonify({"status": "success", "exists": exists}), 200
     except Exception as e:

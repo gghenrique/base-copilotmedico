@@ -1,4 +1,3 @@
-import importlib
 import types
 import sys
 
@@ -32,11 +31,10 @@ def make_fake_spacy():
     return spacy
 
 
-def test_remover_nomes_monkeypatched_spacy(monkeypatch):
+def test_remover_nomes_monkeypatched_spacy(monkeypatch, real_module):
     # Insert fake spacy before importing the module under test
     monkeypatch.setitem(sys.modules, "spacy", make_fake_spacy())
-    mod = importlib.import_module("backend.text_filter")
-    importlib.reload(mod)
+    mod = real_module("backend.text_filter")
 
     text = "Maria encontrou Joao no hospital."
     result = mod.remover_nomes(text)
@@ -46,11 +44,10 @@ def test_remover_nomes_monkeypatched_spacy(monkeypatch):
     assert "hospital" in result
 
 
-def test_retornar_nome(monkeypatch):
+def test_retornar_nome(monkeypatch, real_module):
     # Fake spacy again
     monkeypatch.setitem(sys.modules, "spacy", make_fake_spacy())
-    mod = importlib.import_module("backend.text_filter")
-    importlib.reload(mod)
+    mod = real_module("backend.text_filter")
 
     name = mod.retornar_nome("Converse com Maria e Joao")
     # Implementation returns the last seen name (if multiple)

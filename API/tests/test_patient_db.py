@@ -1,6 +1,6 @@
 import json
 import re
-from ..backend import patient_db as pdb
+from backend import patient_db as pdb
 
 def test_load_database_empty_when_missing(temp_db_file):
     data = pdb.load_database()
@@ -11,7 +11,15 @@ def test_save_and_load_database(temp_db_file):
     sample = {"abc": {"name": "John", "consultations": []}}
     pdb.save_database(sample)
     loaded = pdb.load_database()
-    assert loaded == sample
+
+    # load_database() passa cada registro por normalize_patient_record(), que
+    # completa campos novos (id, doctor_id, ...) em bases legadas. Por isso a
+    # ida-e-volta nao e identidade: validamos os dados persistidos, nao o
+    # formato exato do dicionario.
+    assert set(loaded) == set(sample)
+    assert loaded["abc"]["name"] == "John"
+    assert loaded["abc"]["consultations"] == []
+    assert loaded["abc"]["id"] == "abc"
 
 
 def test_generate_patient_id_unique():
