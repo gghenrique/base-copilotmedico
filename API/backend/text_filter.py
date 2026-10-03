@@ -20,6 +20,30 @@ def retornar_nome(texto):
 
     return nome_completo
 
-
+def anonymize_extracted_content(content):
+    """
+    Aplica o anonimizador (remover_nomes) sobre o conteudo bruto capturado
+    pela extensao, antes de ele ser salvo em extension_data.content.
+    Suporta os 3 formatos aceitos por _normalize_extension_content:
+    lista de {role, text}, dicionario chave->valor, e texto simples.
+    """
+    if isinstance(content, list):
+        return [
+            {**item, "text": remover_nomes(item["text"])}
+            for item in content
+        ]
+    if isinstance(content, dict):
+        anonymized = {}
+        for key, value in content.items():
+            if isinstance(value, list):
+                anonymized[key] = [remover_nomes(str(v)) for v in value]
+            elif isinstance(value, str):
+                anonymized[key] = remover_nomes(value)
+            else:
+                anonymized[key] = remover_nomes(str(value))
+        return anonymized
+    if isinstance(content, str):
+        return remover_nomes(content)
+    return content
 
 

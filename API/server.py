@@ -216,29 +216,8 @@ def _format_extension_extracted_data(extracted_content, source_url=None):
     return "\n".join(lines)
 
 
-def _anonymize_extracted_content(content):
-    """
-    Aplica o anonimizador (text_filter.remover_nomes) sobre o conteudo bruto
-    capturado pela extensao, antes de ele ser salvo em extension_data.content.
-    Suporta os 3 formatos aceitos por _normalize_extension_content:
-    lista de {role, text}, dicionario chave->valor, e texto simples.
-    """
-    if isinstance(content, list):
-        return [
-            {**item, "text": text_filter.remover_nomes(item["text"])}
-            for item in content
-        ]
-    if isinstance(content, dict):
-        anonymized = {}
-        for key, value in content.items():
-            if isinstance(value, list):
-                anonymized[key] = [text_filter.remover_nomes(str(v)) for v in value]
-            else:
-                anonymized[key] = text_filter.remover_nomes(str(value))
-        return anonymized
-    if isinstance(content, str):
-        return text_filter.remover_nomes(content)
-    return content
+
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """
@@ -719,7 +698,7 @@ def _handle_extension_extracted_data_request():
             patient_id=patient_id,
             consultation_id=consultation_id,
             source_url=source_url,
-            content=_anonymize_extracted_content(extracted_content),
+            content=text_filter.anonymize_extracted_content(extracted_content),
             created_at=created_at,
         )
         if not extension_entry:

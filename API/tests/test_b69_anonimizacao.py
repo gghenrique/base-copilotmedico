@@ -1,4 +1,4 @@
-from server import _anonymize_extracted_content
+from backend.text_filter import anonymize_extracted_content as _anonymize_extracted_content
 
 def test_anonimizar_texto_simples():
     # Testa o formato de string
