@@ -100,7 +100,7 @@ docker logs -f esus
 
 Depois acesse http://localhost:8081.
 
-A porta 8080 do host fica com o `frontend` do `docker-compose.yml`, por isso
+A porta 8080 do host fica com o `copmed-web` do `docker-compose.yml`, por isso
 o PEC usa a 8081 (a porta interna do container continua 8080).
 
 ### Primeiro acesso: assistente de instalação
@@ -131,7 +131,7 @@ Com o compose (na raiz do projeto):
 ```bash
 docker compose --profile esus stop esus-pec     # para
 docker compose --profile esus start esus-pec    # sobe de novo
-docker compose --profile esus down              # remove o container (banco fica no volume)
+docker compose --profile esus rm -sf esus-pec   # remove só o container do PEC (banco fica no volume)
 docker volume rm copilot-medico_esus-pec-data   # apaga o banco (volta ao assistente de instalação)
 ```
 
